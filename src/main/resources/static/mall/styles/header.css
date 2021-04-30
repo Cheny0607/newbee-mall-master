@@ -1332,3 +1332,10 @@ img {
 .zv-error-message {
     display:none;
 }
+.hiddenQaDiv{
+    display:none;
+}
+.nextPage{
+    cursor:pointer;
+    color:#009e96;
+}

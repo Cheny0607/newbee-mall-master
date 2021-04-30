@@ -9,7 +9,12 @@
 package ltd.newbee.mall.controller.mall;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
@@ -24,19 +29,23 @@ import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.PagingQa;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
+import ltd.newbee.mall.util.PageResult;
+import ltd.newbee.mall.util.Result;
+import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class GoodsController {
@@ -73,7 +82,7 @@ public class GoodsController {
         request.setAttribute("keyword", keyword);
         params.put("keyword", keyword);
         //搜索上架状态下的商品
-        params.put("goodsSellStatus", Constants.SELL_STATUS_UP);
+        params.put("goodsSellStatus",Constants.SELL_STATUS_UP);
         //封装商品数据
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         request.setAttribute("pageResult", newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
@@ -112,13 +121,21 @@ public class GoodsController {
                 GoodsImageVO imageVo = new GoodsImageVO();
                 imageVo.setPath(path);
                 imageVoList.add(imageVo);
-            } else {
-                break;
             }
         }
         //added by c 2021/4/20 qaVO
        /* BeanUtil.copyList(qaList,GoodsQaVO.class);*/
-        List<GoodsQa> qaList =  newBeeMallGoodsService.getQaList(goodsId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("page","1");
+        params.put("limit","3");
+        params.put("orderBy","submit_date");
+
+        PageQueryUtil pageUtil = new PageQueryUtil(params);
+        PageResult result = newBeeMallGoodsService.getGoodsQaSortPage(pageUtil);
+        List<GoodsQa> qaList = (List<GoodsQa>) result.getList();
+
+
+        //List<GoodsQa> qaList =  newBeeMallGoodsService.getQaList(goodsId);
         if(qaList == null) {
             NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
         }
@@ -168,4 +185,41 @@ public class GoodsController {
         return "mall/detail";
     }
 
+    /*paging*/
+    //added by c 2021/4/26
+    @RequestMapping(value = "goods/qaSort", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getGoodsQaSortPage(@RequestBody PagingQa page) {
+
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("page",page.getPage());
+    params.put("limit",Constants.GOODS_QA_SEARCH_PAGE_LIMIT);
+    params.put("orderBy","submitDate");
+
+    PageQueryUtil pageUtil = new PageQueryUtil(params);
+    PageResult result = newBeeMallGoodsService.getGoodsQaSortPage(pageUtil);
+    return ResultGenerator.genSuccessResult(result);
+    }
+
+    //added by c 2021/4/29
+    @RequestMapping(value = "goods/insertQa", method = RequestMethod.POST)
+    @ResponseBody
+    public Result insertGoodsQa(@RequestBody GoodsQa qa){
+        Integer count = null;
+        //genera qa id
+        Long qaId = newBeeMallGoodsService.getMaxQaId(qa.getGoodsId());
+        qa.setId(qaId);
+        Date submitDate = new Date();
+        Date answerDate = new Date();
+        qa.setSubmitDate(submitDate);
+        qa.setAnswerDate(answerDate);
+        if(qa !=null){
+            count = newBeeMallGoodsService.insertGoodsQa(qa);
+        }
+        if(!(count > 0)){
+            return ResultGenerator.genFailResult("投稿失敗");
+        }
+        return ResultGenerator.genSuccessResult(count);
+    }
 }

@@ -23,4 +23,8 @@ public class GoodsImage {
     this.path = path;
   }
 
+  @Override
+  public String toString() {
+    return "GoodsImage{" + "goodsId=" + goodsId + ", path='" + path + '\'' + '}';
+  }
 }

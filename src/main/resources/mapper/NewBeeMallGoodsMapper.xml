@@ -374,6 +374,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where goods_id = #{goodsId,jdbcType=BIGINT}
   </update>
+<!--added by c-->
   <select id="getGoodsDesc" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsDesc">
     select goods_id,color,size,material,weight,warranty_year,set_date,wrap_size from goods_desc
     where goods_id = #{goodsId,jdbcType=BIGINT}
@@ -389,6 +390,97 @@
   <select id="getReviewList" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsReview">
     select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,u.user_id,u.nick_name,u.login_name,g.goods_name
     from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
-    where r.goods_id = #{goodsId,jdbcType=BIGINT};
+    where r.goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
+  <!--paging-->
+  <select id="findGoodsQaList" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsQa">
+    select goods_id,id,question,submit_date,answer,answer_date,helped_num from goods_QA
+    limit #{start},#{limit}
+  </select>
+  <!--added by c 2021/4/24 order by-->
+  <select id="getSortingQaList" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsQa">
+    select goods_id,id,question,submit_date,answer,answer_date,helped_num from goods_QA
+    <if test="orderBy!=null and orderBy!=''">
+        <choose>
+          <when test="orderBy == 'submit_date'">
+            <!-- 按照发布时间排列 -->
+            order by submit_date
+          </when>
+          <when test="orderBy == 'helped_num'">
+            <!-- 按照参考人数排列 -->
+            order by helped_num
+          </when>
+          <otherwise>
+            <!-- 默认按照id排列 -->
+            order by id
+          </otherwise>
+        </choose>
+    </if>
+    <if test="start!=null and limit!=null">
+        limit #{start},#{limit}
+    </if>
+  </select>
+  <!--added by c 2021/4/24 count-->
+  <select id="getTotalGoodsQa" parameterType="Map" resultType="int">
+    select count(*) from goods_QA;
+  </select>
+  <!--added by c 2021/4/24 insert-->
+  <insert id="insertQa" parameterType="ltd.newbee.mall.entity.GoodsQa">
+    insert into goods_QA (id, question, submit_date, goods_id)
+    values (#{id,jdbcType=BIGINT},#{question,jdbcType=VARCHAR},#{submit_date,jdbcType=TIMESTAMP},
+           #{goods_id,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertQaSelective" parameterType="java.lang.Long">
+    insert into goods_QA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id !=null">
+            id,
+        </if>
+        <if test="question !=null">
+            question,
+        </if>
+        <if test="submitDate !=null">
+            submit_date,
+        </if>
+        <if test="answer !=null">
+            answer,
+        </if>
+        <if test="answerDate !=null">
+            answer_date,
+        </if>
+        <if test="helpedNum !=null">
+        helped_num,
+        </if>
+        <if test="goodsId !=null">
+          goods_id,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="submitDate != null">
+        #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="answerDate != null">
+        #{answerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="helpedNum != null">
+        #{helpedNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="getMaxQaId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select max(id) from goods_QA where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
+
 </mapper>

@@ -102,6 +102,13 @@ public class GoodsReview {
   public void setGoodsName(String goodsName) { this.goodsName = goodsName; }
 
 
+  @Override
+  public String toString() {
+    return "GoodsReview{" + "id='" + id + '\'' + ", star=" + star + ", customerId='" + customerId + '\'' +
+        ", commentDate='" + commentDate + '\'' + ", goodsId=" + goodsId + ", title='" + title + '\'' +
+        ", content='" + content + '\'' + ", picture='" + picture + '\'' + ", nickName='" + nickName + '\'' +
+        ", goodsName='" + goodsName + '\'' + '}';
+  }
 }
 
 

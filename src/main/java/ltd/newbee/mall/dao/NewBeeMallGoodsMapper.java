@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.dao;
 
+import java.util.Map;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
@@ -15,6 +16,7 @@ import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
+import ltd.newbee.mall.util.PageResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -58,5 +60,15 @@ public interface NewBeeMallGoodsMapper {
     List<GoodsQa> getQaList(Long goodsId);
     //added by c 2021/04/17 GoodsDesc取得
     GoodsDesc getGoodsDesc(Long goodsId);
+    //added by c 2021/4/23 ページング
+    List<GoodsQa> findGoodsQaList(PageQueryUtil pageUtil);
+    int getTotalGoodsQa(PageQueryUtil pageUtil);
+    //added by c 2021/4/24 Sorting
+    List<GoodsQa> getSortingQaList (PageQueryUtil pageUtil);
+    //added by c 2021/4/24 insert
+    int insertGoodsQa(GoodsQa question);
+    int insertQaSelective(GoodsQa question);
+    //added by c 2021/4/29 maxId
+    Long getMaxQaId(Long goodsId);
 
 }

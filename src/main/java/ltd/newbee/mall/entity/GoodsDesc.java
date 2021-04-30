@@ -83,5 +83,12 @@ public class GoodsDesc {
     this.wrapSize = wrapSize;
   }
 
+  @Override
+  public String toString() {
+    return "GoodsDesc{" +
+        "goodsId=" + goodsId + ", color='" + color + '\'' + ", size='" + size + '\'' +
+        ", material='" + material + '\'' + ", weight='" + weight + '\'' + ", warrantyYear='" + warrantyYear + '\'' +
+        ", setDate='" + setDate + '\'' + ", wrapSize='" + wrapSize + '\'' + '}';
+  }
 }
 

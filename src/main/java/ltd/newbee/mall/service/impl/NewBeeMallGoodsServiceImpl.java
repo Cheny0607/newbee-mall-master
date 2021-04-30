@@ -27,6 +27,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import sun.jvm.hotspot.debugger.Page;
 
 @Service
 public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
@@ -124,5 +125,37 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     public GoodsDesc getGoodsDesc(Long goodsId){
         GoodsDesc goodsDesc = goodsMapper.getGoodsDesc(goodsId);
         return goodsDesc;
+    }
+    //added by c 2021/4/23 ページング
+    @Override
+    public PageResult getGoodsQaPage(PageQueryUtil pageUtil){
+        List<GoodsQa> qaPageList = goodsMapper.findGoodsQaList(pageUtil);
+        int total = goodsMapper.getTotalGoodsQa(pageUtil);
+        PageResult pageResult = new PageResult(qaPageList,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
+    }
+    //added by c 2021/4/24 Sorting
+    @Override
+    public PageResult getGoodsQaSortPage(PageQueryUtil pageUtil){
+        List<GoodsQa> qaSortList = goodsMapper.getSortingQaList(pageUtil);
+        int total = goodsMapper.getTotalGoodsQa(pageUtil);
+        PageResult pageResult = new PageResult(qaSortList,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
+    }
+    //added by c 2021/4/24 insert
+    @Override
+    public int insertGoodsQa(GoodsQa question) {
+        int count = goodsMapper.insertGoodsQa(question);
+        return count;
+    }
+
+    @Override
+    public Long getMaxQaId(Long goodsId) {
+        Long maxGoodsId = goodsMapper.getMaxQaId(goodsId);
+        if(maxGoodsId !=null){
+            return maxGoodsId + 1;
+        }else{
+            return 1L;
+        }
     }
 }

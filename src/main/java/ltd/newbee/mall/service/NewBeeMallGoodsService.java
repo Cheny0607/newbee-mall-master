@@ -17,6 +17,7 @@ import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface NewBeeMallGoodsService {
     /**
@@ -79,4 +80,12 @@ public interface NewBeeMallGoodsService {
     List<GoodsReview> getReviewList(Long goodsId);
     List<GoodsQa> getQaList(Long goodsId);
     GoodsDesc getGoodsDesc(Long goodsId);
+    //added by c 2021/4/23 ページング
+    PageResult getGoodsQaPage(PageQueryUtil pageUtil);
+    //added by c 2021/4/24 Sorting
+    PageResult getGoodsQaSortPage(PageQueryUtil pageUtil);
+    //added by c 2021/4/24 insert
+    int insertGoodsQa(GoodsQa question);
+    //added by c 2021/4/29 insert getMaxId
+    Long getMaxQaId(Long goodsId);
 }

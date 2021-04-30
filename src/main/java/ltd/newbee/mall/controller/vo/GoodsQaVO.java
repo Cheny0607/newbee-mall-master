@@ -1,24 +1,32 @@
 package ltd.newbee.mall.controller.vo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
 public class GoodsQaVO implements Serializable{
-  private String id;
+  private Long id;
   private String question;
-  private String submitDate;
+  private Date submitDate;
   private String answer;
-  private String answerDate;
+  private Date answerDate;
   private String helpedNum;
   private Long goodsId;
 
+  /*public static void main(String[] args) {
+    String pattern = "yyyy-MM-dd";
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+    String date = simpleDateFormat.format(new Date());
+    System.out.println(date);
+  }*/
 
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -32,11 +40,11 @@ public class GoodsQaVO implements Serializable{
   }
 
 
-  public String getSubmitDate() {
+  public Date getSubmitDate() {
     return submitDate;
   }
 
-  public void setSubmitDate(String submitDate) {
+  public void setSubmitDate(Date submitDate) {
     this.submitDate = submitDate;
   }
 
@@ -50,11 +58,11 @@ public class GoodsQaVO implements Serializable{
   }
 
 
-  public String getAnswerDate() {
+  public Date getAnswerDate() {
     return answerDate;
   }
 
-  public void setAnswerDate(String answerDate) {
+  public void setAnswerDate(Date answerDate) {
     this.answerDate = answerDate;
   }
 

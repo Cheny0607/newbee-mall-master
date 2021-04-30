@@ -1,21 +1,30 @@
 package ltd.newbee.mall.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class GoodsQa {
 
-  private String id;
+  private Long id;
   private String question;
-  private String submitDate;
+  private Date submitDate;
   private String answer;
-  private String answerDate;
+  private Date answerDate;
   private String helpedNum;
   private Long goodsId;
 
+ /* public static void main(String[] args) {
+    String pattern = "yy-MM-dd";
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+    String date = simpleDateFormat.format(new Date());
+    System.out.println(date);
+  }*/
 
-  public String getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -29,11 +38,11 @@ public class GoodsQa {
   }
 
 
-  public String getSubmitDate() {
+  public Date getSubmitDate() {
     return submitDate;
   }
 
-  public void setSubmitDate(String submitDate) {
+  public void setSubmitDate(Date submitDate) {
     this.submitDate = submitDate;
   }
 
@@ -47,11 +56,11 @@ public class GoodsQa {
   }
 
 
-  public String getAnswerDate() {
+  public Date getAnswerDate() {
     return answerDate;
   }
 
-  public void setAnswerDate(String answerDate) {
+  public void setAnswerDate(Date answerDate) {
     this.answerDate = answerDate;
   }
 
@@ -73,5 +82,11 @@ public class GoodsQa {
     this.goodsId = goodsId;
   }
 
+  @Override
+  public String toString() {
+    return "GoodsQa{" + "id=" + id + ", question='" + question + '\'' + ", submitDate=" + submitDate +
+        ", answer='" + answer + '\'' + ", answerDate=" + answerDate + ", helpedNum='" + helpedNum + '\'' +
+        ", goodsId=" + goodsId + '}';
+  }
 }
 
