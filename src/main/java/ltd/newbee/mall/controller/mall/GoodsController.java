@@ -191,7 +191,6 @@ public class GoodsController {
     @ResponseBody
     public Result getGoodsQaSortPage(@RequestBody PagingQa page) {
 
-
     Map<String, Object> params = new HashMap<>();
     params.put("page",page.getPage());
     params.put("limit",Constants.GOODS_QA_SEARCH_PAGE_LIMIT);
@@ -221,5 +220,13 @@ public class GoodsController {
             return ResultGenerator.genFailResult("投稿失敗");
         }
         return ResultGenerator.genSuccessResult(count);
+    }
+
+    //showMoreReviews
+    @RequestMapping(value = "goods/showMoreReviews", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getGoodsReview(@RequestBody Long goodsId){
+        List<GoodsReviewVO> reviewList = newBeeMallGoodsService.getGoodsReview(goodsId);
+        return ResultGenerator.genSuccessResult(reviewList);
     }
 }

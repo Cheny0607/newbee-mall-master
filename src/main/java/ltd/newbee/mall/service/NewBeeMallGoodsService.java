@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.service;
 
+import ltd.newbee.mall.controller.vo.GoodsReviewVO;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
@@ -88,4 +89,6 @@ public interface NewBeeMallGoodsService {
     int insertGoodsQa(GoodsQa question);
     //added by c 2021/4/29 insert getMaxId
     Long getMaxQaId(Long goodsId);
+    //added by c 2021/5/3
+    List<GoodsReviewVO> getGoodsReview(Long goodsId);
 }

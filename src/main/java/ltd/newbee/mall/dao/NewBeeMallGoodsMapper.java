@@ -9,6 +9,7 @@
 package ltd.newbee.mall.dao;
 
 import java.util.Map;
+import ltd.newbee.mall.controller.vo.GoodsReviewVO;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;

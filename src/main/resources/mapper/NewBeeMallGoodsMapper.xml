@@ -482,5 +482,10 @@
   <select id="getMaxQaId" parameterType="java.lang.Long" resultType="java.lang.Long">
     select max(id) from goods_QA where goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
-
+  <!--added by c 2021/5/3 -->
+  <select id="getGoodsReview" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsReview">
+    select id,star,customer_id,comment_date,goods_id,title,content,picture
+    from goods_review
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
 </mapper>

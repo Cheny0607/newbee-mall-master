@@ -9,6 +9,7 @@
 package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.controller.vo.GoodsReviewVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.entity.GoodsDesc;
@@ -157,5 +158,12 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         }else{
             return 1L;
         }
+    }
+
+    @Override
+    public List<GoodsReviewVO>getGoodsReview(Long goodsId){
+        List<GoodsReview> entityList = goodsMapper.getReviewList(goodsId);
+        List<GoodsReviewVO> reviewVoList = BeanUtil.copyList(entityList,GoodsReviewVO.class);
+        return reviewVoList;
     }
 }
