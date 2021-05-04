@@ -14,7 +14,11 @@ public class GoodsReview {
   private String picture;
   private String nickName;
   private String goodsName;
+  private Long reviewNum;
 
+  public Long getReviewNum() { return reviewNum; }
+
+  public void setReviewNum(Long reviewNum) { this.reviewNum = reviewNum; }
 
   public String getId() {
     return id;
@@ -107,7 +111,7 @@ public class GoodsReview {
     return "GoodsReview{" + "id='" + id + '\'' + ", star=" + star + ", customerId='" + customerId + '\'' +
         ", commentDate='" + commentDate + '\'' + ", goodsId=" + goodsId + ", title='" + title + '\'' +
         ", content='" + content + '\'' + ", picture='" + picture + '\'' + ", nickName='" + nickName + '\'' +
-        ", goodsName='" + goodsName + '\'' + '}';
+        ", goodsName='" + goodsName + '\'' + ", reviewNum=" + reviewNum + '}';
   }
 }
 

@@ -482,10 +482,23 @@
   <select id="getMaxQaId" parameterType="java.lang.Long" resultType="java.lang.Long">
     select max(id) from goods_QA where goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
-  <!--added by c 2021/5/3 -->
+  <!--added by c 2021/5/3 getMoreReviews-->
   <select id="getGoodsReview" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsReview">
     select id,star,customer_id,comment_date,goods_id,title,content,picture
     from goods_review
     where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
+  <!--added by c 2021/5/4 helpedNum-->
+  <insert id="insertHelpedNum" parameterType="ltd.newbee.mall.entity.GoodsReviewHelpedNum">
+    insert into helped_num(user_id, review_id)
+    values (#{userId,jdbcType=BIGINT}, #{reviewId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateReviewNum">
+    update goods_review set review_num = review_num + 1
+    where id = #{reviewId}
+  </update>
+  <select id="getGoodsReviewNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select review_num
+    from goods_review where id = #{reviewId,jdbcType=INTEGER}
   </select>
 </mapper>

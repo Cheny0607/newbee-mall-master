@@ -16,6 +16,7 @@ import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
+import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
@@ -165,5 +166,21 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         List<GoodsReview> entityList = goodsMapper.getReviewList(goodsId);
         List<GoodsReviewVO> reviewVoList = BeanUtil.copyList(entityList,GoodsReviewVO.class);
         return reviewVoList;
+    }
+
+    //added by c 2021/5/4
+    @Override
+    public boolean insertHelpedNum(GoodsReviewHelpedNum goodsReviewHelpedNum){
+        return  goodsMapper.insertHelpedNum(goodsReviewHelpedNum);
+    }
+
+    @Override
+    public boolean updateReviewNum(GoodsReviewHelpedNum goodsReviewHelpedNum){
+        return goodsMapper.updateReviewNum(goodsReviewHelpedNum);
+    }
+
+    @Override
+    public long getGoodsReviewNum(int reviewId){
+        return  goodsMapper.getGoodsReviewNum(reviewId);
     }
 }

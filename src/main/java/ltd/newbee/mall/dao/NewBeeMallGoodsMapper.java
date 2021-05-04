@@ -14,6 +14,7 @@ import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
+import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -71,5 +72,9 @@ public interface NewBeeMallGoodsMapper {
     int insertQaSelective(GoodsQa question);
     //added by c 2021/4/29 maxId
     Long getMaxQaId(Long goodsId);
+    //added by c 2021/5/4
+    boolean insertHelpedNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
+    boolean updateReviewNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
+    long getGoodsReviewNum(int reviewId);
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
@@ -23,11 +24,13 @@ import ltd.newbee.mall.controller.vo.GoodsImageVO;
 import ltd.newbee.mall.controller.vo.GoodsQaVO;
 import ltd.newbee.mall.controller.vo.GoodsReviewVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallGoodsDetailVO;
+import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
+import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.PagingQa;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
@@ -187,7 +190,7 @@ public class GoodsController {
 
     /*paging*/
     //added by c 2021/4/26
-    @RequestMapping(value = "goods/qaSort", method = RequestMethod.POST)
+    @RequestMapping(value = "/goods/qaSort", method = RequestMethod.POST)
     @ResponseBody
     public Result getGoodsQaSortPage(@RequestBody PagingQa page) {
 
@@ -202,7 +205,7 @@ public class GoodsController {
     }
 
     //added by c 2021/4/29
-    @RequestMapping(value = "goods/insertQa", method = RequestMethod.POST)
+    @RequestMapping(value = "/goods/insertQa", method = RequestMethod.POST)
     @ResponseBody
     public Result insertGoodsQa(@RequestBody GoodsQa qa){
         Integer count = null;
@@ -222,11 +225,32 @@ public class GoodsController {
         return ResultGenerator.genSuccessResult(count);
     }
 
-    //showMoreReviews
-    @RequestMapping(value = "goods/showMoreReviews", method = RequestMethod.POST)
+    //added by c 2021/5/3 showMoreReviews
+    @RequestMapping(value = "/goods/showMoreReviews", method = RequestMethod.POST)
     @ResponseBody
     public Result getGoodsReview(@RequestBody Long goodsId){
         List<GoodsReviewVO> reviewList = newBeeMallGoodsService.getGoodsReview(goodsId);
         return ResultGenerator.genSuccessResult(reviewList);
+    }
+
+    //added by c 2021/5/4 goodsReviewsHelpedNum
+    @RequestMapping(value = "/goods/reviewHelpedNum",method = RequestMethod.POST)
+    @ResponseBody
+    public Result insertHelpedNum(@RequestBody GoodsReviewHelpedNum goodsReviewHelpedNum,
+        HttpSession httpSession){
+        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+        if(user !=null){
+            goodsReviewHelpedNum.setUserId(user.getUserId());
+        }
+        boolean addFlag = newBeeMallGoodsService.insertHelpedNum(goodsReviewHelpedNum);
+        if(addFlag){
+            boolean updateFlag = newBeeMallGoodsService.updateReviewNum(goodsReviewHelpedNum);
+            if(updateFlag){
+                return ResultGenerator.genSuccessResult(true);
+            }else {
+                return ResultGenerator.genSuccessResult("改修失敗");
+            }
+        }else {
+        }return ResultGenerator.genSuccessResult("挿入失敗");
     }
 }
