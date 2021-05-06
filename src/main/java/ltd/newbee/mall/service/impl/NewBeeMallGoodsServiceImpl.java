@@ -146,8 +146,8 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     }
     //added by c 2021/4/24 insert
     @Override
-    public int insertGoodsQa(GoodsQa question) {
-        int count = goodsMapper.insertGoodsQa(question);
+    public int insertQaSelective(GoodsQa question) {
+        int count = goodsMapper.insertQaSelective(question);
         return count;
     }
 

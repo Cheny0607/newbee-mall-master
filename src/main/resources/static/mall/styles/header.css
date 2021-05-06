@@ -1335,7 +1335,19 @@ img {
 .hiddenQaDiv{
     display:none;
 }
-.nextPage{
+.previousPage, .nextPage{
     cursor:pointer;
     color:#009e96;
+}
+.hiddenList{
+    display: none;
+}
+.hidSpForRevId{
+    display: none;
+}
+.helpNumSpan{
+    cursor: pointer;
+}
+.imgContainer{
+    cursor: pointer;
 }

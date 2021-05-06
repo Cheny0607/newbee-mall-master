@@ -87,7 +87,7 @@ public interface NewBeeMallGoodsService {
     //added by c 2021/4/24 Sorting
     PageResult getGoodsQaSortPage(PageQueryUtil pageUtil);
     //added by c 2021/4/24 insert
-    int insertGoodsQa(GoodsQa question);
+    int insertQaSelective(GoodsQa question);
     //added by c 2021/4/29 insert getMaxId
     Long getMaxQaId(Long goodsId);
     //added by c 2021/5/3

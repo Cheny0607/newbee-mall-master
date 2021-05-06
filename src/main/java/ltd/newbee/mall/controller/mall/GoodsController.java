@@ -207,7 +207,7 @@ public class GoodsController {
     //added by c 2021/4/29
     @RequestMapping(value = "/goods/insertQa", method = RequestMethod.POST)
     @ResponseBody
-    public Result insertGoodsQa(@RequestBody GoodsQa qa){
+    public Result insertQaSelective(@RequestBody GoodsQa qa){
         Integer count = null;
         //genera qa id
         Long qaId = newBeeMallGoodsService.getMaxQaId(qa.getGoodsId());
@@ -217,7 +217,7 @@ public class GoodsController {
         qa.setSubmitDate(submitDate);
         qa.setAnswerDate(answerDate);
         if(qa !=null){
-            count = newBeeMallGoodsService.insertGoodsQa(qa);
+            count = newBeeMallGoodsService.insertQaSelective(qa);
         }
         if(!(count > 0)){
             return ResultGenerator.genFailResult("投稿失敗");
@@ -246,11 +246,12 @@ public class GoodsController {
         if(addFlag){
             boolean updateFlag = newBeeMallGoodsService.updateReviewNum(goodsReviewHelpedNum);
             if(updateFlag){
-                return ResultGenerator.genSuccessResult(true);
+                long reviewNum = newBeeMallGoodsService.getGoodsReviewNum(goodsReviewHelpedNum.getReviewId());
+                return ResultGenerator.genSuccessResult(reviewNum);
             }else {
-                return ResultGenerator.genSuccessResult("改修失敗");
+                return ResultGenerator.genFailResult("改修失敗");
             }
         }else {
-        }return ResultGenerator.genSuccessResult("挿入失敗");
+        }return ResultGenerator.genFailResult("挿入失敗");
     }
 }

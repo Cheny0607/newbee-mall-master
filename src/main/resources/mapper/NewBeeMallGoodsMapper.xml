@@ -388,7 +388,7 @@
     where goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
   <select id="getReviewList" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsReview">
-    select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,u.user_id,u.nick_name,u.login_name,g.goods_name
+    select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,r.review_num,u.user_id,u.nick_name,u.login_name,g.goods_name
     from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
     where r.goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
@@ -425,12 +425,12 @@
     select count(*) from goods_QA;
   </select>
   <!--added by c 2021/4/24 insert-->
-  <insert id="insertQa" parameterType="ltd.newbee.mall.entity.GoodsQa">
+ <!-- <insert id="insertQa" parameterType="ltd.newbee.mall.entity.GoodsQa">
     insert into goods_QA (id, question, submit_date, goods_id)
     values (#{id,jdbcType=BIGINT},#{question,jdbcType=VARCHAR},#{submit_date,jdbcType=TIMESTAMP},
            #{goods_id,jdbcType=BIGINT})
-  </insert>
-  <insert id="insertQaSelective" parameterType="java.lang.Long">
+  </insert>-->
+  <insert id="insertQaSelective" parameterType="ltd.newbee.mall.entity.GoodsQa">
     insert into goods_QA
     <trim prefix="(" suffix=")" suffixOverrides=",">
         <if test="id !=null">
@@ -497,8 +497,8 @@
     update goods_review set review_num = review_num + 1
     where id = #{reviewId}
   </update>
-  <select id="getGoodsReviewNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  <select id="getGoodsReviewNum" parameterType="int" resultType="java.lang.Long">
     select review_num
-    from goods_review where id = #{reviewId,jdbcType=INTEGER}
+    from goods_review where id = #{reviewId,jdbcType=BIGINT}
   </select>
 </mapper>
