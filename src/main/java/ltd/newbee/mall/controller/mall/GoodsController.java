@@ -254,4 +254,18 @@ public class GoodsController {
         }else {
         }return ResultGenerator.genFailResult("挿入失敗");
     }
+
+    //added by c 2021/5/7
+    @RequestMapping(value = "/goods/reviewPaging", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getGoodsReviewPaging(@RequestBody PageQueryUtil page) {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("page",page.getPage());
+        params.put("limit",Constants.GOODS_QA_SEARCH_PAGE_LIMIT);
+
+        PageQueryUtil pageUtil = new PageQueryUtil(params);
+        PageResult result = newBeeMallGoodsService.pagingReviewLi(pageUtil);
+        return ResultGenerator.genSuccessResult(result);
+    }
 }

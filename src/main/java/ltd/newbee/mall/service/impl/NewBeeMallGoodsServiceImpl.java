@@ -183,4 +183,14 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     public long getGoodsReviewNum(int reviewId){
         return  goodsMapper.getGoodsReviewNum(reviewId);
     }
+
+    //added by c 2021/5/7
+    @Override
+    public PageResult pagingReviewLi(PageQueryUtil pageUtil){
+        List<GoodsReview> reviewPageList = goodsMapper.pagingReviewLi(pageUtil);
+        int total = goodsMapper.getTotalGoodsReview(pageUtil);
+        PageResult pageResult = new PageResult(reviewPageList,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
+    }
+
 }

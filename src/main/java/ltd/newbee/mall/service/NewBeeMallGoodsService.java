@@ -96,4 +96,6 @@ public interface NewBeeMallGoodsService {
     boolean insertHelpedNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
     boolean updateReviewNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
     long getGoodsReviewNum(int reviewId);
+    //added by c 2021/5/7
+    PageResult pagingReviewLi(PageQueryUtil pageUtil);
 }

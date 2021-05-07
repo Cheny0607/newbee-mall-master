@@ -392,7 +392,7 @@
     from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
     where r.goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
-  <!--paging-->
+  <!--pagingQa-->
   <select id="findGoodsQaList" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsQa">
     select goods_id,id,question,submit_date,answer,answer_date,helped_num from goods_QA
     limit #{start},#{limit}
@@ -500,5 +500,14 @@
   <select id="getGoodsReviewNum" parameterType="int" resultType="java.lang.Long">
     select review_num
     from goods_review where id = #{reviewId,jdbcType=BIGINT}
+  </select>
+  <!--pagingReview-->
+  <select id="pagingReviewLi" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsReview">
+    select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,r.review_num,u.user_id,u.nick_name,u.login_name,g.goods_name
+    from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
+    limit #{start},#{limit}
+  </select>
+  <select id="getTotalGoodsReview" parameterType="Map" resultType="int">
+    select count(*) from goods_review;
   </select>
 </mapper>

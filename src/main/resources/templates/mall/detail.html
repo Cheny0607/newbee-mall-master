@@ -502,6 +502,13 @@
                                         <p class="g-score">
  				<span data-score="5.0">
  					<span class="g-clip" >text.product.review.Rating</span>
+            <span class="g-clip">
+ 					<img  src="/goods-img/star.jpg">
+ 					<img  src="/goods-img/star.jpg">
+ 					<img  src="/goods-img/star.jpg">
+ 					<img  src="/goods-img/star.jpg">
+ 					<img  src="/goods-img/star.jpg">
+ 					</span>
  	      		</span>
                                         </p>
                                         <p class="g-reviewList_user"><b>s.t</b>さん 2020/07/20</p>
@@ -525,15 +532,16 @@
                                 <li class="g-reviewList_item">
                                     <div class="g-lg-flow-sm">
                                         <p class="g-score">
- 				<span data-score="5.0">
- 					<span class="g-clip">text.product.review.Rating</span>
- 					<span class="g-clip">
+ 			<span data-score="5.0">
+ 					<span class="g-clip" >text.product.review.Rating</span>
+            <span class="g-clip">
  					<img  src="/goods-img/star.jpg">
  					<img  src="/goods-img/star.jpg">
  					<img  src="/goods-img/star.jpg">
  					<img  src="/goods-img/star.jpg">
  					<img  src="/goods-img/star.jpg">
  					</span>
+ 	      		</span>
                                         </p>
                                         <p class="g-reviewList_user"><b th:text="${review.nickName}">ルル</b>
                                             <span>
@@ -547,7 +555,9 @@
                                     <p class="g-reviewList_like">
                                         <a class="g-link reviewLike1" id="js-hitLike" data-count="1"
                                            data="60476d48d3d291002900011a" data-clickable="">
-                                            <i class="g-s g-s-like-g" aria-hidden="true"></i>
+                                            <i class="g-s g-s-like-g" aria-hidden="true">
+                                              <img class="thumUpImg" src="/goods-img/thumUp.jpg" alt="Italian Trulli">
+                                            </i>
                                             <span class="helpNumSpan" th:text="'参考になった'+${review.reviewNum}">参考になった(2人)</span>
                                             <span class="hidSpForRevId"></span>
                                         </a></p>

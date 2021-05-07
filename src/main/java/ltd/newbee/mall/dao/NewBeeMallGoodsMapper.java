@@ -76,5 +76,8 @@ public interface NewBeeMallGoodsMapper {
     boolean insertHelpedNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
     boolean updateReviewNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
     long getGoodsReviewNum(int reviewId);
+    //added by c 2021/5/7
+    List<GoodsReview> pagingReviewLi(PageQueryUtil pageUtil);
+    int getTotalGoodsReview(PageQueryUtil pageUtil);
 
 }
