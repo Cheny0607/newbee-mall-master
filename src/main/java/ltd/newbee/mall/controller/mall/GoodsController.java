@@ -33,6 +33,7 @@ import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.PagingQa;
+import ltd.newbee.mall.entity.SearchHistory;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
@@ -255,7 +256,7 @@ public class GoodsController {
         }return ResultGenerator.genFailResult("挿入失敗");
     }
 
-    //added by c 2021/5/7
+    /*//added by c 2021/5/7
     @RequestMapping(value = "/goods/reviewPaging", method = RequestMethod.POST)
     @ResponseBody
     public Result getGoodsReviewPaging(@RequestBody PageQueryUtil page) {
@@ -267,5 +268,39 @@ public class GoodsController {
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         PageResult result = newBeeMallGoodsService.pagingReviewLi(pageUtil);
         return ResultGenerator.genSuccessResult(result);
+    }*/
+
+    //added by c 2021/5/8 searching
+    @RequestMapping(value = "/searchHistory/getSearchHistory", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getSearchHistory(HttpSession httpSession) {
+        List<NewBeeMallGoods> list = new ArrayList<NewBeeMallGoods>();
+        NewBeeMallGoods goods1 = new NewBeeMallGoods();
+        NewBeeMallGoods goods2 = new NewBeeMallGoods();
+        NewBeeMallGoods goods3 = new NewBeeMallGoods();
+        goods1.setGoodsId(10700L);
+        goods1.setGoodsName("iphone10");
+        list.add(goods1);
+        goods2.setGoodsId(10003L);
+        goods2.setGoodsName("无印良品 MUJI 基础润肤化妆水");
+        list.add(goods2);
+        goods3.setGoodsId(10004L);
+        goods3.setGoodsName("无印良品 MUJI 柔和洁面泡沫");
+        list.add(goods3);
+        return ResultGenerator.genSuccessResult(list);
+    }
+
+    //added by c 2021/5/10 insert search history
+    @RequestMapping(value = "/search/insertHistory", method = RequestMethod.POST)
+    @ResponseBody
+    public Result insertSearchHistory(@RequestBody SearchHistory keyword){
+        Integer count = null;
+        if(keyword !=null){
+            count = newBeeMallGoodsService.insertSearchHistory(keyword);
+        }
+        if(!(count > 0)){
+            return ResultGenerator.genFailResult("検索失敗");
+        }
+        return ResultGenerator.genSuccessResult(count);
     }
 }

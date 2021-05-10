@@ -18,6 +18,7 @@ import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.SearchHistory;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -185,12 +186,18 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     }
 
     //added by c 2021/5/7
-    @Override
+   /* @Override
     public PageResult pagingReviewLi(PageQueryUtil pageUtil){
         List<GoodsReview> reviewPageList = goodsMapper.pagingReviewLi(pageUtil);
         int total = goodsMapper.getTotalGoodsReview(pageUtil);
         PageResult pageResult = new PageResult(reviewPageList,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
-    }
+    }*/
 
+    //added by c 2021/5/10 insert search history
+    @Override
+    public int insertSearchHistory(SearchHistory keyword) {
+        int count = goodsMapper.insertSearchHistory(keyword);
+        return count;
+    }
 }

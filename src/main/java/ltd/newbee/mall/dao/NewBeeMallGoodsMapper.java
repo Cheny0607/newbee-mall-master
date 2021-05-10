@@ -16,6 +16,7 @@ import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.SearchHistory;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
@@ -77,7 +78,8 @@ public interface NewBeeMallGoodsMapper {
     boolean updateReviewNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
     long getGoodsReviewNum(int reviewId);
     //added by c 2021/5/7
-    List<GoodsReview> pagingReviewLi(PageQueryUtil pageUtil);
-    int getTotalGoodsReview(PageQueryUtil pageUtil);
-
+   /* List<GoodsReview> pagingReviewLi(PageQueryUtil pageUtil);
+    int getTotalGoodsReview(PageQueryUtil pageUtil);*/
+    //added by c 2021/5/10 insert search history
+    int insertSearchHistory(SearchHistory keyword);
 }

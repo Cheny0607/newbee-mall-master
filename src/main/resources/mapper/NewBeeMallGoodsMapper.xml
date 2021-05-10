@@ -502,12 +502,45 @@
     from goods_review where id = #{reviewId,jdbcType=BIGINT}
   </select>
   <!--pagingReview-->
-  <select id="pagingReviewLi" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsReview">
+  <!--<select id="pagingReviewLi" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsReview">
     select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,r.review_num,u.user_id,u.nick_name,u.login_name,g.goods_name
     from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
     limit #{start},#{limit}
   </select>
   <select id="getTotalGoodsReview" parameterType="Map" resultType="int">
     select count(*) from goods_review;
-  </select>
+  </select>-->
+
+  <!--added by c 2021/5/10 insert search history-->
+  <insert id="insertSearchHistory" parameterType="ltd.newbee.mall.entity.SearchHistory">
+    insert into search_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id !=null">
+        id,
+      </if>
+      <if test="userId !=null">
+        user_id,
+      </if>
+      <if test="keyword !=null">
+        keyword,
+      </if>
+      <if test="date !=null">
+        date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
 </mapper>
