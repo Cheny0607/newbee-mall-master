@@ -128,6 +128,13 @@
                                             <i class="fa fa-picture-o"></i>&nbsp;上传商品主图
                                         </button>
                                     </div>
+                                    <!--added by c upload test-->
+                                    <div class="col-sm-4>">
+                                        <button class="btn btn-info" style="margin-bottom: 5px;"
+                                                id="testUpload">
+                                            <i class="fa fa-picture-o"></i>&nbsp;上传csv
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group" id="wangEditor" th:utext="${goods!=null and goods.goodsDetailContent !=null}?${goods.goodsDetailContent}: ''">
@@ -136,10 +143,13 @@
                                 <!-- 按钮 -->
                                 &nbsp;<button class="btn btn-info float-right" style="margin-left: 5px;"
                                               id="saveButton">保存商品
-                            </button>&nbsp;
+                                </button>&nbsp;
                                 &nbsp;<button class="btn btn-secondary float-right" style="margin-left: 5px;"
                                               id="cancelButton">返回商品列表
-                            </button>&nbsp;
+                                </button>&nbsp;
+                                <button class="btn btn-secondary float-right" style="margin-left: 5px;"
+                                        id="downloadButton">下载商品列表
+                                </button>&nbsp;
                             </div>
                         </form>
                     </div>

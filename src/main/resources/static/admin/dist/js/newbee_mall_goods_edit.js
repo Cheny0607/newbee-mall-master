@@ -68,6 +68,28 @@ $(function () {
             }
         }
     });
+
+    new AjaxUpload('#testUpload', {
+        action: '/admin/uploadTest/file',
+        name: 'file',
+        autoSubmit: true,
+        responseType: "json",
+        onSubmit: function (file, extension) {
+            if (!(extension && /^(jpg|jpeg|png|gif|csv)$/.test(extension.toLowerCase()))) {
+                alert('只支持jpg、png、gif、csv格式的文件！');
+                return false;
+            }
+        },
+        onComplete: function (file, r) {
+            if (r != null && r.resultCode == 200) {
+                $("#goodsCoverImg").attr("src", r.data);
+                $("#goodsCoverImg").attr("style", "width: 128px;height: 128px;display:block;");
+                return false;
+            } else {
+                alert("error");
+            }
+        }
+    });
 });
 
 $('#saveButton').click(function () {
@@ -299,3 +321,37 @@ $('#levelTwo').on('change', function () {
         }
     });
 });
+
+$('#downloadButton').on('click',function(){
+    var id = $("#id").val();
+    var name = $("#name").val();;
+    var startDate = $("#startDate").val();
+    var endDate = $("#endDate").val();
+    var campaign = $("#campaign").val();
+    $.ajax({
+        type:'POST',//方法类型
+        url:'/search/insertHistory',
+        contentType: 'application/json',
+        data:JSON.stringify(data),
+        success:function(result){
+            debugger;
+            //サーバーが成功の場合ここが呼ばれる
+            if (result.resultCode == 200){
+                swal("ご検索ありがとうございます",{
+                    icon:"success",
+                });
+            } else {
+                swal(result.message,{
+                    icon:"error",
+                });
+            };
+        },
+        //エラーの場合
+        error:function (){
+            swal("操作失敗",{
+                icon:"error",
+            });
+        }
+    })
+})
+

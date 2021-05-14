@@ -8,7 +8,14 @@
  */
 package ltd.newbee.mall.controller.common;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.ParseException;
+import javax.annotation.Resource;
 import ltd.newbee.mall.common.Constants;
+import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.NewBeeMallUtils;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
@@ -40,9 +47,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/admin")
 public class UploadController {
-
     @Autowired
     private StandardServletMultipartResolver standardServletMultipartResolver;
+    @Resource
+    private NewBeeMallGoodsService newBeeMallGoodsService;
 
     @PostMapping({"/upload/file"})
     @ResponseBody
@@ -128,4 +136,47 @@ public class UploadController {
         return resultSuccess;
     }
 
+    //added by c 2021/5/13 insert csv
+    @PostMapping({"/uploadTest/file"})
+    @ResponseBody
+    public Result uploadTest(HttpServletRequest httpServletRequest, @RequestParam("file")MultipartFile file)throws URISyntaxException, ParseException {
+        try {
+            //wrap inputStream
+            //bufferedReader
+            InputStream is = file.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            //while readLine
+            String line;
+            while((line = br.readLine()) !=null) {
+                //split
+                String[] arr = line.split(",");
+                //set entity
+                GoodsSale goodsSale = new GoodsSale();
+                goodsSale.setId(Long.parseLong(arr[0]));
+                goodsSale.setName(arr[1]);
+                SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
+                goodsSale.setStartDate(sdFormat.parse(arr[2]));
+                goodsSale.setEndDate(sdFormat.parse(arr[3]));
+                goodsSale.setCampaign(arr[4]);
+                //call insert service
+                Integer count = null;
+                if(goodsSale !=null){
+                    count = newBeeMallGoodsService.insertGoodsSale(goodsSale);
+                }
+                if(!(count > 0)){
+                    return ResultGenerator.genFailResult("検索失敗");
+                }
+                return ResultGenerator.genSuccessResult(count);
+            }
+            br.close();
+        } catch (IOException e) {
+            //TODO Auto-generated catch block
+            e.printStackTrace();
+            return ResultGenerator.genFailResult("文件上传失败");
+        }
+        Result resultSuccess = ResultGenerator.genSuccessResult();
+        return resultSuccess;
+    }
+
 }
+

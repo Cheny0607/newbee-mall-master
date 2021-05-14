@@ -12,13 +12,17 @@ import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.GoodsReviewVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.entity.GoodsCoupon;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
+import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.SearchHistory;
+import ltd.newbee.mall.entity.TbCategory;
+import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -198,6 +202,43 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     @Override
     public int insertSearchHistory(SearchHistory keyword) {
         int count = goodsMapper.insertSearchHistory(keyword);
+        return count;
+    }
+    @Override
+    public Long getMaxSearchId(Long userId) {
+        Long maxSearchId = goodsMapper.getMaxSearchId(userId);
+        if(maxSearchId !=null){
+            return maxSearchId + 1;
+        }else{
+            return 1L;
+        }
+    }
+
+    //added by c campaign page
+    @Override
+    public List<TbSale>getTbSale(Long id){
+        List<TbSale> tbSaleList = goodsMapper.getTbSale(id);
+        return tbSaleList;
+    }
+    @Override
+    public List<GoodsSale>getGoodsSale(Long id){
+        List<GoodsSale> goodsSaleList = goodsMapper.getGoodsSale(id);
+        return goodsSaleList;
+    }
+    @Override
+    public List<TbCategory>getTbCategory(Long id){
+        List<TbCategory> tbCategoryList = goodsMapper.getTbCategory(id);
+        return tbCategoryList;
+    }
+    @Override
+    public List<GoodsCoupon>getGoodsCoupon(Long couponId){
+        List<GoodsCoupon> couponList = goodsMapper.getGoodsCoupon(couponId);
+        return couponList;
+    }
+    //added by c 20215/13 insert csv
+    @Override
+    public int insertGoodsSale(GoodsSale goodsSale) {
+        int count = goodsMapper.insertGoodsSale(goodsSale);
         return count;
     }
 }

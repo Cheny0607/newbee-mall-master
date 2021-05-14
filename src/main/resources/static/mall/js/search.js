@@ -85,8 +85,8 @@ $("#keyword").keyup(function(){
     debugger;
     var keyword = $("#keyword").val();
     $.ajax({
-        type:"get",
-        url:"/goods/search?goodsName="+keyword,
+        type:"get",    //method="POST"
+        url:"/goods/search?goodsName="+keyword, //post url
         //data: keyword,  // JSONデータ本体
         //contentType: 'application/json', // リクエストの Content-Type
         dataType:"json",
@@ -94,6 +94,17 @@ $("#keyword").keyup(function(){
             debugger;
             clearResultList();
             showResultForLikeSearch(json_data);
+            debugger;
+            var list = json_data.data.list[0];
+            var str = list.goodsName;
+            var arr = str.split(" ");
+            arr.filter(keyword => keyword.includes(keyword));
+            // for(var i = 0;i < arr.length;i++){
+            //     if(arr[i].includes(keyword)){
+            //         keyword=arr[i];
+            //     }
+            // }
+            keywordInsert(keyword);
         },
         error:function(){
             debugger;
@@ -101,6 +112,39 @@ $("#keyword").keyup(function(){
         }
     });
 });
+
+function keywordInsert(){
+    debugger;
+    var keyword = $("#keyword").val();
+    var data = {
+        "keyword":keyword
+    };
+    $.ajax({
+        type:'POST',//方法类型
+        url:'/search/insertHistory',
+        contentType: 'application/json',
+        data:JSON.stringify(data),
+        success:function(result){
+            debugger;
+            //サーバーが成功の場合ここが呼ばれる
+            if (result.resultCode == 200){
+                swal("ご検索ありがとうございます",{
+                    icon:"success",
+                });
+            } else {
+                swal(result.message,{
+                    icon:"error",
+                });
+            };
+        },
+        //エラーの場合
+        error:function (){
+            swal("操作失敗",{
+                icon:"error",
+            });
+        }
+    })
+}
 
 function clearResultList(){
     //clear #searchResultUl's elements

@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.controller.mall;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -293,8 +294,19 @@ public class GoodsController {
     //added by c 2021/5/10 insert search history
     @RequestMapping(value = "/search/insertHistory", method = RequestMethod.POST)
     @ResponseBody
-    public Result insertSearchHistory(@RequestBody SearchHistory keyword){
+    public Result insertSearchHistory(@RequestBody SearchHistory keyword,
+        HttpSession httpSession){
+        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+        if(user !=null){
+            keyword.setUserId(user.getUserId());
+        }
+        SimpleDateFormat i = new SimpleDateFormat();
+        i.applyPattern("yyyy-MM-dd HH:mm:ss a");
+        Date date = new Date();
         Integer count = null;
+        Long searchId = newBeeMallGoodsService.getMaxSearchId(keyword.getUserId());
+        keyword.setId(searchId);
+        keyword.setDate(date);
         if(keyword !=null){
             count = newBeeMallGoodsService.insertSearchHistory(keyword);
         }
