@@ -732,4 +732,13 @@
       </if>
     </trim>
   </insert>
+  <!--added by c 2021/5/15 paging goodsSale-->
+  <select id="pagingGoodsSale" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsSale">
+    select id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag from goods_sale
+    limit #{start},#{limit}
+    order by #{orderBy} #{desAsc}
+  </select>
+  <select id="getTotalGoodsSale" parameterType="Map" resultType="int">
+    select count(*) from goods_sale;
+  </select>
 </mapper>

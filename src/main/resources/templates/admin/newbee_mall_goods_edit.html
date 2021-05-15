@@ -135,6 +135,13 @@
                                             <i class="fa fa-picture-o"></i>&nbsp;上传csv
                                         </button>
                                     </div>
+                                    <div class="col-sm-4>">
+                                        <button class="btn btn-info" style="margin-bottom: 5px;"
+                                                id="downloadButton">
+                                            <i class="fa fa-picture-o"></i>&nbsp;下载商品列表
+                                        </button>
+                                        <iframe id="my_iframe" style="display:none;"></iframe>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group" id="wangEditor" th:utext="${goods!=null and goods.goodsDetailContent !=null}?${goods.goodsDetailContent}: ''">
@@ -146,9 +153,6 @@
                                 </button>&nbsp;
                                 &nbsp;<button class="btn btn-secondary float-right" style="margin-left: 5px;"
                                               id="cancelButton">返回商品列表
-                                </button>&nbsp;
-                                <button class="btn btn-secondary float-right" style="margin-left: 5px;"
-                                        id="downloadButton">下载商品列表
                                 </button>&nbsp;
                             </div>
                         </form>

@@ -221,8 +221,8 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         return tbSaleList;
     }
     @Override
-    public List<GoodsSale>getGoodsSale(Long id){
-        List<GoodsSale> goodsSaleList = goodsMapper.getGoodsSale(id);
+    public List<GoodsSale>getGoodsSale(Integer[] ids){
+        List<GoodsSale> goodsSaleList = goodsMapper.getGoodsSale(ids);
         return goodsSaleList;
     }
     @Override
@@ -240,5 +240,13 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     public int insertGoodsSale(GoodsSale goodsSale) {
         int count = goodsMapper.insertGoodsSale(goodsSale);
         return count;
+    }
+    //added by c 2021/5/15 paging goodsSale
+    @Override
+    public PageResult pagingGoodsSale(PageQueryUtil pageUtil){
+        List<GoodsSale> gsSortList = goodsMapper.pagingGoodsSale(pageUtil);
+        int total = goodsMapper.getTotalGoodsSale(pageUtil);
+        PageResult pageResult = new PageResult(gsSortList,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
     }
 }

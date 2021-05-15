@@ -323,23 +323,20 @@ $('#levelTwo').on('change', function () {
 });
 
 $('#downloadButton').on('click',function(){
-    var id = $("#id").val();
-    var name = $("#name").val();;
-    var startDate = $("#startDate").val();
-    var endDate = $("#endDate").val();
-    var campaign = $("#campaign").val();
+    debugger;
+    var _data = [1,2,3]
     $.ajax({
         type:'POST',//方法类型
-        url:'/search/insertHistory',
+        url:"/admin/download/file",
         contentType: 'application/json',
-        data:JSON.stringify(data),
+        data:JSON.stringify(_data),
         success:function(result){
             debugger;
             //サーバーが成功の場合ここが呼ばれる
             if (result.resultCode == 200){
-                swal("ご検索ありがとうございます",{
-                    icon:"success",
-                });
+                this.windows.href = result.data;
+                data.url = "/Users/chennaiyuan/Desktop/upload/test.csv";   //path
+                Download(url);
             } else {
                 swal(result.message,{
                     icon:"error",
@@ -352,6 +349,10 @@ $('#downloadButton').on('click',function(){
                 icon:"error",
             });
         }
-    })
-})
+    });
+});
+function Download(url){
+    debugger;
+    document.getElementById('my_iframe').src = url;
+}
 

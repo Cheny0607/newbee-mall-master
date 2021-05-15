@@ -9,11 +9,14 @@
 package ltd.newbee.mall.controller.common;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import javax.annotation.Resource;
 import ltd.newbee.mall.common.Constants;
+import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.NewBeeMallUtils;
@@ -23,7 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -175,6 +180,39 @@ public class UploadController {
             return ResultGenerator.genFailResult("文件上传失败");
         }
         Result resultSuccess = ResultGenerator.genSuccessResult();
+        return resultSuccess;
+    }
+
+    //added by c 2021/5/14 download csv
+    @RequestMapping(value = "/download/file",method = RequestMethod.POST)
+    @ResponseBody
+    public Result downloadFile(@RequestBody Integer[] ids) {
+        File f = new File("/Users/chennaiyuan/Desktop/upload/test.csv");
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
+            List<GoodsSale> goodsSaleList = newBeeMallGoodsService.getGoodsSale(ids);
+            for(int i = 0;i < goodsSaleList.size();i++){
+                GoodsSale goodsSale = goodsSaleList.get(i);
+                if(goodsSale !=null) {
+                    bw.write(goodsSaleList.get(i).toString());
+                    bw.newLine();
+                }
+            }
+           /* goodsSaleList.stream().forEach(goodsSale ->{
+                try{
+                    bw.write(goodsSale.toString());
+                    bw.newLine();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            });*/
+            bw.close();
+        } catch (IOException e) {
+            //TODO Auto-generated catch block
+            e.printStackTrace();
+            return ResultGenerator.genFailResult("文件下载失败");
+        }
+        Result resultSuccess = ResultGenerator.genSuccessResult("/Users/chennaiyuan/Desktop/upload/test.csv");
         return resultSuccess;
     }
 
