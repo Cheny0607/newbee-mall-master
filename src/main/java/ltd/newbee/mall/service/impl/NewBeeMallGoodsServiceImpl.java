@@ -10,6 +10,7 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.GoodsReviewVO;
+import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.entity.GoodsCoupon;
@@ -246,6 +247,18 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     public PageResult pagingGoodsSale(PageQueryUtil pageUtil){
         List<GoodsSale> gsSortList = goodsMapper.pagingGoodsSale(pageUtil);
         int total = goodsMapper.getTotalGoodsSale(pageUtil);
+        List<GoodsSaleVO> gsVoList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(gsSortList)) {
+            gsVoList = BeanUtil.copyList(gsSortList, GoodsSaleVO.class);
+            for (GoodsSaleVO goodsSaleVO : gsVoList) {
+                String name = goodsSaleVO.getName();
+                // 字符串过长导致文字超出的问题
+                if (name.length() > 28) {
+                    name = name.substring(0, 28) + "...";
+                    goodsSaleVO.setName(name);
+                }
+            }
+        }
         PageResult pageResult = new PageResult(gsSortList,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
     }

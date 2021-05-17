@@ -315,4 +315,28 @@ public class GoodsController {
         }
         return ResultGenerator.genSuccessResult(count);
     }
+
+    //added by c 2021/5/17
+    @GetMapping({"/gsSearch/sortPage", "/sortPage.html"})
+    public String pagingGoodsSale(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+        if (StringUtils.isEmpty(params.get("page"))) {
+            params.put("page", 1);
+        }
+        params.put("limit", Constants.GOODS_SEARCH_PAGE_LIMIT);
+        //封装参数供前端回显
+        if (params.containsKey("orderBy") && !StringUtils.isEmpty(params.get("orderBy") + "")) {
+            request.setAttribute("orderBy", params.get("orderBy") + "");
+        }
+        String keyword = "";
+        //对keyword做过滤 去掉空格
+        if (params.containsKey("keyword") && !StringUtils.isEmpty((params.get("keyword") + "").trim())) {
+            keyword = params.get("keyword") + "";
+        }
+        request.setAttribute("keyword", keyword);
+        params.put("keyword", keyword);
+        //封装商品数据
+        PageQueryUtil pageUtil = new PageQueryUtil(params);
+        request.setAttribute("pageResult", newBeeMallGoodsService.pagingGoodsSale(pageUtil));
+        return "mall/search";
+    }
 }
