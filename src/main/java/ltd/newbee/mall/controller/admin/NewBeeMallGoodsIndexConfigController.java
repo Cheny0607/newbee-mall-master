@@ -38,7 +38,6 @@ public class NewBeeMallGoodsIndexConfigController {
 
     @Resource
     private NewBeeMallIndexConfigService newBeeMallIndexConfigService;
-
     @GetMapping("/indexConfigs")
     public String indexConfigsPage(HttpServletRequest request, @RequestParam("configType") int configType) {
         IndexConfigTypeEnum indexConfigTypeEnum = IndexConfigTypeEnum.getIndexConfigTypeEnumByType(configType);
