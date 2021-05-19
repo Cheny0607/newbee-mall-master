@@ -57,32 +57,62 @@
             </div>
             <br>
             <div class="campaignTable">
-              <table id="table" border="1" style="width:1200px">
+              <table id="table" border="1" style="width:900px">
                 <thead>
                 <tr>
-                  <th style="width:20px">
+                  <th style="width:10px">
                     <input type="checkbox" id="checkAll"/>
                   </th>
-                  <th style="width:80px">キャンペーンID</th>
-                  <th style="width:180px">キャンペーン名</th>
-                  <th style="width:150px">開始時間</th>
-                  <th style="width:150px">終了時間</th>
-                  <th style="width:80px">ステータス</th>
+                  <th style="width:30px">キャンペーンID</th>
+                  <th style="width:30px">キャンペーン名</th>
+                  <th style="width:30px">開始時間</th>
+                  <th style="width:30px">終了時間</th>
+                  <!--<th style="width:30px">ステータス</th>-->
                 </tr>
                 </thead>
-                <tbody>
+                <th:block th:each="gs:${goodsSaleDetail}" th:if="${gs !=null}">
+                <!--delete-->
+                <tbody class="delet">
                 <tr>
                   <td>
                     <input type="checkbox"/>
                   </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td class="campaignTable-saleId" th:text="${gs.id}"></td>
+                  <td class="campaignTable-saleName" th:text="${gs.name}"></td>
+                  <td class="campaignTable-saleDate" th:text="${gs.startDate}"></td>
+                  <td class="campaignTable-endDate" th:text="${gs.endDate}"></td>
+<!--                  <td></td>-->
                 </tr>
                 </tbody>
+                <!--hidden-->
+                <tbody class="hidden">
+                <tr>
+                  <td>
+                    <input type="checkbox"/>
+                  </td>
+                  <td th:text="${gs.id}"></td>
+                  <td th:text="${gs.name}"></td>
+                  <td th:text="${gs.startDate}"></td>
+                  <td th:text="${gs.endDate}"></td>
+                  <!--                  <td></td>-->
+                </tr>
+                </tbody>
+                </th:block>
               </table>
+            </div>
+            <div class="campaignTable-step" id="detailFooter">
+              <div class="campaignTable-step-link">
+                <span class="previousPage">前のページ</span>
+                <span>全2件</span>
+                <span>ページ<span id="currentPageNo">1</span>/5</span>
+                <span class="nextPage">次のページ</span>
+              </div>
+              <div class="campaignTable-select-wrap">
+                <select id="currentPageNo" class="campaignTable-select" name="sort">
+                  <option value="total_yes">終わりの順</option>
+                  <option value="created_at" selected="">新しい順</option>
+                </select>
+              </div>
             </div>
           </div><!-- /.card-body -->
         </div>
