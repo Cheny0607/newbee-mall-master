@@ -1,3 +1,4 @@
+/*
 $(function(){
   //disable previous page
   debugger;
@@ -18,10 +19,10 @@ $( ".previousPage" ).click(function(){
 
 function paging(num) {
   var page = $("#currentPageNo").text();
-  /*console.log("selected value",$('#zv-cqa-select-sort :selected').text());*/
+  /!*console.log("selected value",$('#zv-cqa-select-sort :selected').text());*!/
   var pageNo = 0;
   console.log("current page:", page);
-  var url = "/goods/sale";
+  var url = "/goods";
   if (num == 0) {
     //下页
     pageNo = parseInt(page) + 1;
@@ -37,7 +38,7 @@ function paging(num) {
   // console.log("data".data);
   $.ajax({
     type: 'POST',//方法类型
-    url: "/goods/sale",
+    url: "/goods",
     contentType: 'application/json',
     data: JSON.stringify(data),
     success: function (result) {
@@ -48,7 +49,7 @@ function paging(num) {
           $("#campaignTable").find(".delete").remove();
         }
         var ar = result.data.list;
-        /* if(ar.length>0)*/
+        /!* if(ar.length>0)*!/
         for (let i = 0; i < ar.length; i++) {
           el = $($(".hidden")[0]).clone().removeClass("hidden");
           el.find(".campaignTable-saleId").html(result.data.list[i].id);
@@ -57,7 +58,7 @@ function paging(num) {
           el.find(".campaignTable-endDate").html(result.data.list[i].endDate);
 
           $("#detailFooter").before(el);
-          /*qa.appendTo("#ZVCQuestionArea");*/
+          /!*qa.appendTo("#ZVCQuestionArea");*!/
         }
       } else {
         swal(result.message, {
@@ -71,4 +72,61 @@ function paging(num) {
       });
     }
   })
+}*/
+
+$('#download').on('click',function(){
+  debugger;
+  var _data = [1,2,3]
+  $.ajax({
+    type:'POST',//方法类型
+    url:"/admin/download/file",
+    contentType: 'application/json',
+    data:JSON.stringify(_data),
+    success:function(result){
+      debugger;
+      //サーバーが成功の場合ここが呼ばれる
+      if (result.resultCode == 200){
+        /*this.windows.href = result.data;
+        data.url = "/Users/chennaiyuan/Desktop/upload/test.csv"; */  //path
+        Download(result.data);
+      } else {
+        swal(result.message,{
+          icon:"error",
+        });
+      };
+    },
+    //エラーの場合
+    error:function (){
+      swal("操作失敗",{
+        icon:"error",
+      });
+    }
+  });
+});
+function Download(url){
+  debugger;
+  document.getElementById('my_iframe').src = url;
 }
+
+debugger;
+    new AjaxUpload('#uploadSale', {
+      action: '/admin/uploadTest/file',
+      name: 'file',
+      autoSubmit: true,
+      responseType: "json",
+      onSubmit: function (file, extension) {
+        if (!(extension && /^(jpg|jpeg|png|gif|csv)$/.test(extension.toLowerCase()))) {
+          alert('只支持jpg、png、gif、csv格式的文件！');
+          return false;
+        }
+      },
+      onComplete: function (file, r) {
+        if (r != null && r.resultCode == 200) {
+          $("#goodsCoverImg").attr("src", r.data);
+          $("#goodsCoverImg").attr("style", "width: 128px;height: 128px;display:block;");
+          return false;
+        } else {
+          alert("error");
+        }
+      }
+    });

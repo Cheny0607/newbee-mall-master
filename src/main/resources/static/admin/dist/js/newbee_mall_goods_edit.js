@@ -322,7 +322,7 @@ $('#levelTwo').on('change', function () {
     });
 });
 
-$('#downloadButton').on('click',function(){
+$('#DownlodaBtn').on('click',function(){
     debugger;
     var _data = [1,2,3]
     $.ajax({

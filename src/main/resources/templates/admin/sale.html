@@ -24,9 +24,11 @@
           </div> <!-- /.card-body -->
           <div class="card-body">
             <div class="grid-btn">
-              <button class="btn btn-info" onclick="campaignAdd()"><i class="fa fa-plus"></i>&nbsp;新規追加
+              <button class="btn btn-info" onclick="campaignAdd()">
+                <i class="fa fa-plus"></i>&nbsp;新規追加
               </button>
-              <button class="btn btn-info" onclick="csvUpload()"><i class="fa fa-pencil-square-o"></i>&nbsp;CSV登録
+              <button class="btn btn-info" id="uploadSale" onclick="csvUpload()">
+                <i class="fa fa-pencil-square-o"></i>&nbsp;CSV登録
               </button>
             </div>
             <br>
@@ -47,7 +49,8 @@
               <div class="campaignDownload"  style="float:left; width:50%;height:50px;">
                 <form name="input" action="html_form_action.php" method="get">
                   <select type="text" name="キャンペーン名" id="campaignName" style="width:200px"></select>
-                  <button id="dumy download">Download</button>
+                  <button type="Button" id="download">Download</button>
+                  <iframe id="my_iframe" style="display:none;"></iframe>
                 </form>
               </div>
               <div class="campaignSearch"  style="float:left;width:50%;height:50px;">
@@ -70,9 +73,10 @@
                   <!--<th style="width:30px">ステータス</th>-->
                 </tr>
                 </thead>
-                <th:block th:each="gs:${goodsSaleDetail}" th:if="${gs !=null}">
+                <th:block th:unless="${#lists.isEmpty(pageResult.list)}">
+                <th:block th:each="gs:${pageResult.list}" th:if="${gs !=null}">
                 <!--delete-->
-                <tbody class="delet">
+                <tbody>
                 <tr>
                   <td>
                     <input type="checkbox"/>
@@ -85,7 +89,7 @@
                 </tr>
                 </tbody>
                 <!--hidden-->
-                <tbody class="hidden">
+               <!-- <tbody class="hidden">
                 <tr>
                   <td>
                     <input type="checkbox"/>
@@ -94,13 +98,14 @@
                   <td th:text="${gs.name}"></td>
                   <td th:text="${gs.startDate}"></td>
                   <td th:text="${gs.endDate}"></td>
-                  <!--                  <td></td>-->
+                  &lt;!&ndash;                  <td></td>&ndash;&gt;
                 </tr>
-                </tbody>
+                </tbody>-->
+                </th:block>
                 </th:block>
               </table>
             </div>
-            <div class="campaignTable-step" id="detailFooter">
+            <!--<div class="campaignTable-step" id="detailFooter">
               <div class="campaignTable-step-link">
                 <span class="previousPage">前のページ</span>
                 <span>全2件</span>
@@ -113,10 +118,38 @@
                   <option value="created_at" selected="">新しい順</option>
                 </select>
               </div>
-            </div>
+            </div>-->
           </div><!-- /.card-body -->
         </div>
       </div><!-- /.container-fluid -->
+    </div>
+    <!--paging-->
+    <div class="pages">
+      <div class="page_wrap">
+        <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
+            <span class="page_span1">
+                 <a th:href="@{${pageResult.currPage==1}?'##':'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-1}+'&orderBy='+${orderBy==null?'':orderBy}}">
+                                    < 上一页
+                                </a>
+                <th:block th:if="${pageResult.currPage-2 >=1}"><a
+                    th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-2}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                    th:text="${pageResult.currPage -2}">1</a></th:block>
+                <th:block th:if="${pageResult.currPage-1 >=1}"><a
+                    th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-1}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                    th:text="${pageResult.currPage -1}">1</a></th:block>
+                <a href="##" class="active" th:text="${pageResult.currPage}">1</a>
+                <th:block th:if="${pageResult.currPage+1<=pageResult.totalPage}"><a
+                    th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+1}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                    th:text="${pageResult.currPage +1}">1</a></th:block>
+                <th:block th:if="${pageResult.currPage+2<=pageResult.totalPage}"><a
+                    th:href="@{'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+2}+'&orderBy='+${orderBy==null?'':orderBy}}"
+                    th:text="${pageResult.currPage +2}">1</a></th:block>
+                 <a th:href="@{${pageResult.currPage>=pageResult.totalPage}?'##':'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage+1}+'&orderBy='+${orderBy==null?'':orderBy}}">
+                                    下一页 >
+                                </a>
+					</span>
+        </th:block>
+      </div>
     </div>
     <!-- /.content-wrapper -->
     <!-- 引入页脚footer-fragment -->

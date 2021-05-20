@@ -1,6 +1,10 @@
 package ltd.newbee.mall.controller.admin;
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,10 +26,13 @@ import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
+import ltd.newbee.mall.util.Result;
+import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,29 +75,30 @@ public class GoodsSaleController {
 //    c.put("descAsc","asc");
 //
 //    PageQueryUtil gsPageUtil = new PageQueryUtil(c);
-    PageResult gsResult = newBeeMallGoodsService.pagingGoodsSale(pageUtil);
-    List<GoodsSale> gsList = (List<GoodsSale>) gsResult.getList();
-    if(gsList == null) {
-      NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
-    }
-    List<GoodsSaleVO> gsVoList = new ArrayList<GoodsSaleVO>();
-    for(int i = 0; i < gsList.size();i++) {
-      GoodsSale gs = new GoodsSale();
-      gs = gsList.get(i);
-      if (gs !=null) {
-        GoodsSaleVO gsVo = new GoodsSaleVO();
-        BeanUtil.copyProperties(gs, gsVo);
-        gsVoList.add(gsVo);
-
-        SimpleDateFormat sdFormat = new SimpleDateFormat();
-        sdFormat.applyPattern("yyyy-MM-dd");
-        Date newStartDate = new Date();
-        Date newEndDate = new Date();
-        gs.setStartDate(newStartDate);
-        gs.setEndDate(newEndDate);
-      }
-    }
-    request.setAttribute("goodsSaleDetail", gsVoList);
+//    PageResult gsResult = newBeeMallGoodsService.pagingGoodsSale(pageUtil);
+//    List<GoodsSale> gsList = (List<GoodsSale>) gsResult.getList();
+//    if(gsList == null) {
+//      NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
+//    }
+//    List<GoodsSaleVO> gsVoList = new ArrayList<GoodsSaleVO>();
+//    for(int i = 0; i < gsList.size();i++) {
+//      GoodsSale gs = new GoodsSale();
+//      gs = gsList.get(i);
+//      if (gs !=null) {
+//        GoodsSaleVO gsVo = new GoodsSaleVO();
+//        BeanUtil.copyProperties(gs, gsVo);
+//        gsVoList.add(gsVo);
+//
+//        SimpleDateFormat sdFormat = new SimpleDateFormat();
+//        sdFormat.applyPattern("yyyy-MM-dd");
+//        Date newStartDate = new Date();
+//        Date newEndDate = new Date();
+//        gs.setStartDate(newStartDate);
+//        gs.setEndDate(newEndDate);
+//      }
+//    }
+//    request.setAttribute("goodsSaleDetail", gsVoList);
     return "admin/sale";
   }
+
 }

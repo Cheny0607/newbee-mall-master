@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsSale;
@@ -212,7 +213,8 @@ public class UploadController {
             e.printStackTrace();
             return ResultGenerator.genFailResult("文件下载失败");
         }
-        Result resultSuccess = ResultGenerator.genSuccessResult("/Users/chennaiyuan/Desktop/upload/test.csv");
+        Result resultSuccess = ResultGenerator.genSuccessResult();
+        resultSuccess.setData("/Users/chennaiyuan/Desktop/upload/test.csv");
         return resultSuccess;
     }
 
