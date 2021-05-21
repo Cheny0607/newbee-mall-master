@@ -22,7 +22,7 @@ $("#keyword").focus(function(){
     var keyword=$("#keyword").val();
     if(keyword !=""){
         $("#keyword").trigger("keyup")
-;    }
+    }
    $.ajax({
        type:'POST',
        url:'/searchHistory/getSearchHistory',

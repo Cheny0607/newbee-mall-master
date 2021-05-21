@@ -55,7 +55,7 @@
               </div>
               <div class="campaignSearch"  style="float:left;width:50%;height:50px;">
                 <input type="search" id="searchForCampaign" >
-                <button id="dumy search">絞り込み検索</button>
+                <button id="saleSearch">絞り込み検索</button>
               </div>
             </div>
             <br>
@@ -75,7 +75,6 @@
                 </thead>
                 <th:block th:unless="${#lists.isEmpty(pageResult.list)}">
                 <th:block th:each="gs:${pageResult.list}" th:if="${gs !=null}">
-                <!--delete-->
                 <tbody>
                 <tr>
                   <td>
@@ -87,43 +86,23 @@
                   <td class="campaignTable-endDate" th:text="${gs.endDate}"></td>
 <!--                  <td></td>-->
                 </tr>
+                <br>
                 </tbody>
-                <!--hidden-->
-               <!-- <tbody class="hidden">
-                <tr>
-                  <td>
-                    <input type="checkbox"/>
-                  </td>
-                  <td th:text="${gs.id}"></td>
-                  <td th:text="${gs.name}"></td>
-                  <td th:text="${gs.startDate}"></td>
-                  <td th:text="${gs.endDate}"></td>
-                  &lt;!&ndash;                  <td></td>&ndash;&gt;
-                </tr>
-                </tbody>-->
                 </th:block>
                 </th:block>
               </table>
             </div>
-            <!--<div class="campaignTable-step" id="detailFooter">
-              <div class="campaignTable-step-link">
-                <span class="previousPage">前のページ</span>
-                <span>全2件</span>
-                <span>ページ<span id="currentPageNo">1</span>/5</span>
-                <span class="nextPage">次のページ</span>
-              </div>
-              <div class="campaignTable-select-wrap">
+              <!--<div class="campaignTable-select-wrap">
                 <select id="currentPageNo" class="campaignTable-select" name="sort">
                   <option value="total_yes">終わりの順</option>
                   <option value="created_at" selected="">新しい順</option>
                 </select>
-              </div>
-            </div>-->
+              </div>-->
+            </div>
           </div><!-- /.card-body -->
         </div>
       </div><!-- /.container-fluid -->
     </div>
-    <!--paging-->
     <div class="pages">
       <div class="page_wrap">
         <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
@@ -157,6 +136,9 @@
   </div>
 </div>
 
+<!--css-->
+<link rel="stylesheet" th:href="@{/admin/dist/css/sale.css}">
+<!--<link rel="stylesheet" th:href="@{/admin/mall/styles/search.css}">-->
 <!-- jQuery -->
 <script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
 <!-- Bootstrap 4 -->
@@ -171,6 +153,13 @@
 <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
 <script th:src="@{/admin/dist/js/public.js}"></script>
 <script th:src="@{/admin/dist/js/sale.js}"></script>
+
+<ul id="saleSearchResultUl">
+  <li class="saleDumyLi serchLi">
+    <a>
+    </a>
+  </li>
+</ul>
 
 </body>
 </html>

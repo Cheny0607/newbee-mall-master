@@ -1,87 +1,22 @@
-/*
-$(function(){
-  //disable previous page
-  debugger;
-  $(".previousPage").css("pointer-events","none").css("color","#009e96");
-})
-$("#campaignTable-select-sort").change(function (){
-  paging(2);
-});
-//下一页
-$( ".nextPage" ).click(function(){
-  paging(0);
-  $(".previousPage").css("pointer-events","auto").css("color","#009e96");
-});
-//上一页
-$( ".previousPage" ).click(function(){
-  paging(1);
-});
-
-function paging(num) {
-  var page = $("#currentPageNo").text();
-  /!*console.log("selected value",$('#zv-cqa-select-sort :selected').text());*!/
-  var pageNo = 0;
-  console.log("current page:", page);
-  var url = "/goods";
-  if (num == 0) {
-    //下页
-    pageNo = parseInt(page) + 1;
-  } else if (num == 1) {
-    //上页
-    pageNo = parseInt(page) - 1;
-  } else {
-    pageNo = 1;
-  }
-  var data = {
-    "page": pageNo
-  };
-  // console.log("data".data);
-  $.ajax({
-    type: 'POST',//方法类型
-    url: "/goods",
-    contentType: 'application/json',
-    data: JSON.stringify(data),
-    success: function (result) {
-      //サーバーが成功した場合
-      if (result.resultCode == 200) {
-        var el;
-        if (result.data.list.length > 0) {
-          $("#campaignTable").find(".delete").remove();
-        }
-        var ar = result.data.list;
-        /!* if(ar.length>0)*!/
-        for (let i = 0; i < ar.length; i++) {
-          el = $($(".hidden")[0]).clone().removeClass("hidden");
-          el.find(".campaignTable-saleId").html(result.data.list[i].id);
-          el.find(".campaignTable-saleName").html(result.data.list[i].name);
-          el.find(".campaignTable-saleDate").html(result.data.list[i].startDate);
-          el.find(".campaignTable-endDate").html(result.data.list[i].endDate);
-
-          $("#detailFooter").before(el);
-          /!*qa.appendTo("#ZVCQuestionArea");*!/
-        }
-      } else {
-        swal(result.message, {
-          icon: "error",
-        });
-      };
-    },
-    error: function () {
-      swal("操作失败", {
-        icon: "error",
-      });
-    }
-  })
-}*/
-
+//download
 $('#download').on('click',function(){
   debugger;
-  var _data = [1,2,3]
+  var ids = [];
+  $('input:checkbox:checked').parent().next().map(function (){
+    ids.push($(this).text())
+    return ids;
+  })
+  if(ids == null){
+    swal("请选择一条记录",{
+      icon:"warning",
+    });
+    return
+  }
   $.ajax({
     type:'POST',//方法类型
     url:"/admin/download/file",
     contentType: 'application/json',
-    data:JSON.stringify(_data),
+    data:JSON.stringify(ids),
     success:function(result){
       debugger;
       //サーバーが成功の場合ここが呼ばれる
@@ -108,25 +43,109 @@ function Download(url){
   document.getElementById('my_iframe').src = url;
 }
 
-debugger;
-    new AjaxUpload('#uploadSale', {
-      action: '/admin/uploadTest/file',
-      name: 'file',
-      autoSubmit: true,
-      responseType: "json",
-      onSubmit: function (file, extension) {
-        if (!(extension && /^(jpg|jpeg|png|gif|csv)$/.test(extension.toLowerCase()))) {
-          alert('只支持jpg、png、gif、csv格式的文件！');
-          return false;
-        }
-      },
-      onComplete: function (file, r) {
-        if (r != null && r.resultCode == 200) {
-          $("#goodsCoverImg").attr("src", r.data);
-          $("#goodsCoverImg").attr("style", "width: 128px;height: 128px;display:block;");
-          return false;
-        } else {
-          alert("error");
-        }
-      }
-    });
+//upload
+new AjaxUpload('#uploadSale', {
+  action: '/admin/uploadTest/file',
+  name: 'file',
+  autoSubmit: true,
+  responseType: "json",
+  onSubmit: function (file, extension) {
+    if (!(extension && /^(jpg|jpeg|png|gif|csv)$/.test(extension.toLowerCase()))) {
+      alert('只支持jpg、png、gif、csv格式的文件！');
+      return false;
+    }
+  },
+  onComplete: function (file, r) {
+    if (r != null && r.resultCode == 200) {
+      $("#goodsCoverImg").attr("src", r.data);
+      $("#goodsCoverImg").attr("style", "width: 128px;height: 128px;display:block;");
+      return false;
+    } else {
+      alert("error");
+    }
+  }
+});
+
+
+// function saleSearch() {
+//   var q = $('#searchForCampaign').val();
+//   if (q && q != '') {
+//     window.location.href = '/admin/goods/sale?keyword=' + q;
+//   }
+// }
+
+// $("#searchForCampaign").focus(function(){
+//   var keyword=$("#searchForCampaign").val();
+//   if(keyword !=""){
+//     $("#searchForCampaign").trigger("keyup")
+//   }
+// });
+
+//search keyword
+$("#searchForCampaign").keyup(function(){
+  debugger;
+  var keyword = $("#searchForCampaign").val();
+  $.ajax({
+    type:"get",    //method="POST"
+    url:"/sale/search?name="+keyword, //post url
+    // url:"/goods/sale", //post url
+    //data: keyword,  // JSONデータ本体
+    //contentType: 'application/json', // リクエストの Content-Type
+    dataType:"json",
+    success:function(json_data){
+      debugger;
+      clearResultList();
+      showResultForLikeSearch(json_data);
+      debugger;
+      var list = json_data.data.list[0];
+      var str = list.name;
+      var arr = str.split(" ");
+      arr.filter(keyword => keyword.includes(keyword));
+      // keywordInsert(keyword);
+    },
+    error:function(){
+      debugger;
+      alert("Server Error. Please try again later.");
+    }
+  });
+});
+
+function showResultForLikeSearch(result){
+  var list = result.data.list;
+  // var _href = "/admin/goods/sale?keyword=";
+  for(var i = 0; i < list.length;i++){
+    var el = $(".saleDumyLi").clone().removeClass("saleDumyLi");
+    var link = el.find("a");
+    link.text(list[i].name);
+    // link.attr("href",_href + list[i].id);
+    $(".saleDumyLi").before(el);
+  }
+  $("#saleSearchResultUl").show();
+  addendToSearchBar($("#saleSearchResultUl"));
+}
+
+function addendToSearchBar(el){
+  var searchBar = $("#searchForCampaign");//jquery
+  //var searchBar = document.getElementById("keyword");//dom
+  var rect = searchBar[0].getBoundingClientRect();//convert jquery object to dom by searchBar[0]
+  console.log(rect.top,rect.right,rect.bottom,rect.left);
+  var sbHeight = searchBar.height();
+  el.css({top:rect.top + sbHeight,left:rect.left,position:'absolute'});
+}
+
+function clearResultList(){
+  //clear #searchResultUl's elements
+  //foreach is javascript's method
+  //$("#searchResultUl").children() is jquery
+  //toArray() convert $("#searchResultUl").children() to javascript array
+  $("#saleSearchResultUl").children().toArray().forEach(function(value,index,array){
+    // check if include class name which is dumyLi
+    // value is dom html element
+    var incFlag = $(value).attr("class").includes("saleDumyLi");
+    // delete elements besides dumyLi
+    if(!incFlag){
+      $(value).remove();
+    }
+  })
+}
+
