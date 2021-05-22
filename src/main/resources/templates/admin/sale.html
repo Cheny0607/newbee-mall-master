@@ -1,6 +1,7 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="../../../../../../goodsSale.css">
 <header th:replace="admin/header::header-fragment"></header>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -24,7 +25,7 @@
           </div> <!-- /.card-body -->
           <div class="card-body">
             <div class="grid-btn">
-              <button class="btn btn-info" onclick="campaignAdd()">
+              <button class="btn btn-info" id="new" onclick="campaignAdd()">
                 <i class="fa fa-plus"></i>&nbsp;新規追加
               </button>
               <button class="btn btn-info" id="uploadSale" onclick="csvUpload()">
@@ -33,12 +34,12 @@
             </div>
             <br>
             <div>
-              <div style="float:left; width:30%;height:50px;">
+              <div class="showAll">
 	                        	<span>
 	                        		<b>すべて(0)</b>
 	                        	</span>
               </div>
-              <div style="float:left;width:30%;height:50px;">
+              <div class="closeBtn">
 	                        	<span>
 	                        		<b>クローズ(0)</b>
 	                        	</span>
@@ -46,31 +47,31 @@
             </div>
             <br>
             <div>
-              <div class="campaignDownload"  style="float:left; width:50%;height:50px;">
+              <div class="clo-6">
                 <form name="input" action="html_form_action.php" method="get">
-                  <select type="text" name="キャンペーン名" id="campaignName" style="width:200px"></select>
+                  <select type="text" name="キャンペーン名" id="campaignName"></select>
                   <button type="Button" id="download">Download</button>
                   <iframe id="my_iframe" style="display:none;"></iframe>
                 </form>
               </div>
-              <div class="campaignSearch"  style="float:left;width:50%;height:50px;">
+              <div class="clo-6">
                 <input type="search" id="searchForCampaign" >
                 <button id="saleSearch">絞り込み検索</button>
               </div>
             </div>
             <br>
             <div class="campaignTable">
-              <table id="table" border="1" style="width:900px">
-                <thead>
+              <table class="col-12" border="1">
+                <thead class="tableHead">
                 <tr>
-                  <th style="width:10px">
+                  <th class="col-1">
                     <input type="checkbox" id="checkAll"/>
                   </th>
-                  <th style="width:30px">キャンペーンID</th>
-                  <th style="width:30px">キャンペーン名</th>
-                  <th style="width:30px">開始時間</th>
-                  <th style="width:30px">終了時間</th>
-                  <!--<th style="width:30px">ステータス</th>-->
+                  <th class="col-1">キャンペーンID</th>
+                  <th class="col-1">キャンペーン名</th>
+                  <th class="col-2">開始時間</th>
+                  <th class="col-2">終了時間</th>
+                  <th class="col-2">ステータス</th>
                 </tr>
                 </thead>
                 <th:block th:unless="${#lists.isEmpty(pageResult.list)}">
@@ -80,11 +81,11 @@
                   <td>
                     <input type="checkbox"/>
                   </td>
-                  <td class="campaignTable-saleId" th:text="${gs.id}"></td>
-                  <td class="campaignTable-saleName" th:text="${gs.name}"></td>
-                  <td class="campaignTable-saleDate" th:text="${gs.startDate}"></td>
-                  <td class="campaignTable-endDate" th:text="${gs.endDate}"></td>
-<!--                  <td></td>-->
+                  <td class="col-1" th:text="${gs.id}"></td>
+                  <td class="col-1" th:text="${gs.name}"></td>
+                  <td class="col-2" th:text="${gs.startDate}"></td>
+                  <td class="col-2" th:text="${gs.endDate}"></td>
+                  <td class="col-2" th:text="${gs.flag}"></td>
                 </tr>
                 <br>
                 </tbody>
@@ -103,7 +104,7 @@
         </div>
       </div><!-- /.container-fluid -->
     </div>
-    <div class="pages">
+    <!--<div class="pages">-->
       <div class="page_wrap">
         <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
             <span class="page_span1">
@@ -129,15 +130,19 @@
 					</span>
         </th:block>
       </div>
-    </div>
+    <!--</div>-->
     <!-- /.content-wrapper -->
     <!-- 引入页脚footer-fragment -->
     <div th:replace="admin/footer::footer-fragment"></div>
   </div>
 </div>
+<ul id="saleSearchResultUl">
+  <li class="saleDumyLi serchLi">
+    <a>
+    </a>
+  </li>
+</ul>
 
-<!--css-->
-<link rel="stylesheet" th:href="@{/admin/dist/css/sale.css}">
 <!--<link rel="stylesheet" th:href="@{/admin/mall/styles/search.css}">-->
 <!-- jQuery -->
 <script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
@@ -153,13 +158,21 @@
 <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
 <script th:src="@{/admin/dist/js/public.js}"></script>
 <script th:src="@{/admin/dist/js/sale.js}"></script>
+<!--css-->
+<link rel="stylesheet" th:href="@{/admin/dist/css/sale.css}">
+<!--[if lt IE 9]>
+　　　　<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+　　<![endif]-->
+<!--responsive-->
+<!--
+<link rel="stylesheet" type="text/css"
+      media="screen and (max-device-width: 400px)"
+      href="tinyScreen.css">
+<link rel="stylesheet" type="text/css"
+      media="screen and (min-width: 400px) and (max-device-width: 600px)"
+      href="smallScreen.css">
+-->
 
-<ul id="saleSearchResultUl">
-  <li class="saleDumyLi serchLi">
-    <a>
-    </a>
-  </li>
-</ul>
 
 </body>
 </html>
