@@ -26,28 +26,38 @@
   width: 16.66%;
 }
 .uploadSale{
+  width: 16.66%;
+  margin-left: 0%;
+  height:auto;
+}
+.col-119{
   width: 8.33%;
   margin-left: 0%;
   height:auto;
 }
-.showAll{
-  width: 8.33%;
-  margin-left: 0%;
-  height:auto;
-}
-.closeBtn{
-  width: 8.33%;
-  margin-right: 0%;
-  height:auto;
-}
+/*.closeBtn{*/
+/*  width: 8.33%;*/
+/*  margin-right: 0%;*/
+/*  height:auto;*/
+/*}*/
 #campaignName{
   width: 25%;
 }
 #searchForCampaign{
   width: 25%;
 }
+#saleSearch{
+  border: 2px solid rgb(44, 44, 44);
+  background-color: #17a2b8;
+  border-color: #9aa3a5;
+  color: #fff;
+  width: 16.66%;
+}
 #download{
-  border: 2px solid;
+  border: 2px solid rgb(44, 44, 44);
+  background-color: #17a2b8;
+  border-color: #9aa3a5;
+  color: #fff;
   width: 16.66%;
 }
 #my_iframe{

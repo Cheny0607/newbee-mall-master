@@ -242,7 +242,17 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         int count = goodsMapper.insertGoodsSale(goodsSale);
         return count;
     }
-    //added by c 2021/5/15 paging goodsSale
+    // //added by c 2021/5/24 max saleId
+    @Override
+    public Long getMaxSaleId(Long id) {
+        Long maxSaleId = goodsMapper.getMaxSaleId(id);
+        if(maxSaleId !=null){
+            return maxSaleId + 1;
+        }else{
+            return 1L;
+        }
+    }
+
     @Override
     public PageResult pagingGoodsSale(PageQueryUtil pageUtil){
         List<GoodsSale> gsSortList = goodsMapper.pagingGoodsSale(pageUtil);

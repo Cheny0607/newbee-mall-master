@@ -46,7 +46,6 @@ public class GoodsSaleController {
 
   //added by c 2021/5/17
   @GetMapping( "/goods/sale")
-/*  @ResponseBody*/
   public String pagingGoodsSale(@RequestParam Map<String, Object> params, HttpServletRequest request) {
     if (StringUtils.isEmpty(params.get("page"))) {
       params.put("page",1);
@@ -68,37 +67,27 @@ public class GoodsSaleController {
     PageQueryUtil pageUtil = new PageQueryUtil(params);
     request.setAttribute("pageResult", newBeeMallGoodsService.pagingGoodsSale(pageUtil));
 
-//    Map<String, Object> c = new HashMap<>();
-//    c.put("page","1");
-//    c.put("limit","3");
-//    c.put("orderBy","end_date");
-//    c.put("descAsc","asc");
-//
-//    PageQueryUtil gsPageUtil = new PageQueryUtil(c);
-//    PageResult gsResult = newBeeMallGoodsService.pagingGoodsSale(pageUtil);
-//    List<GoodsSale> gsList = (List<GoodsSale>) gsResult.getList();
-//    if(gsList == null) {
-//      NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
-//    }
-//    List<GoodsSaleVO> gsVoList = new ArrayList<GoodsSaleVO>();
-//    for(int i = 0; i < gsList.size();i++) {
-//      GoodsSale gs = new GoodsSale();
-//      gs = gsList.get(i);
-//      if (gs !=null) {
-//        GoodsSaleVO gsVo = new GoodsSaleVO();
-//        BeanUtil.copyProperties(gs, gsVo);
-//        gsVoList.add(gsVo);
-//
-//        SimpleDateFormat sdFormat = new SimpleDateFormat();
-//        sdFormat.applyPattern("yyyy-MM-dd");
-//        Date newStartDate = new Date();
-//        Date newEndDate = new Date();
-//        gs.setStartDate(newStartDate);
-//        gs.setEndDate(newEndDate);
-//      }
-//    }
-//    request.setAttribute("goodsSaleDetail", gsVoList);
     return "admin/sale";
   }
 
+  //added by c 2021/5/24 insert new sale
+  @RequestMapping(value = "/goods/saleInsert",method = RequestMethod.POST)
+  @ResponseBody
+  public Result insertSale(@RequestBody GoodsSale goodsSale){
+    Integer count = null;
+    GoodsSale gsList = new GoodsSale();
+    Long saleId = newBeeMallGoodsService.getMaxSaleId(gsList.getId());
+    gsList.setId(saleId);
+    gsList.setName(goodsSale.getName());
+    gsList.setStartDate(goodsSale.getStartDate());
+    gsList.setEndDate(goodsSale.getEndDate());
+    if(gsList !=null){
+      count = newBeeMallGoodsService.insertGoodsSale(gsList);
+    }
+    if(!(count > 0)){
+      return ResultGenerator.genFailResult("投稿失敗");
+    }
+    return ResultGenerator.genSuccessResult(count);
+
+  }
 }

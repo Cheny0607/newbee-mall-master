@@ -1,7 +1,6 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="../../../../../../goodsSale.css">
 <header th:replace="admin/header::header-fragment"></header>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -25,7 +24,7 @@
           </div> <!-- /.card-body -->
           <div class="card-body">
             <div class="grid-btn">
-              <button class="btn btn-info" id="new" onclick="campaignAdd()">
+              <button class="btn btn-info" id="modal-open"><!-- onclick="campaignAdd()-->
                 <i class="fa fa-plus"></i>&nbsp;新規追加
               </button>
               <button class="btn btn-info" id="uploadSale" onclick="csvUpload()">
@@ -34,12 +33,10 @@
             </div>
             <br>
             <div>
-              <div class="showAll">
+              <div class="col-119">
 	                        	<span>
 	                        		<b>すべて(0)</b>
 	                        	</span>
-              </div>
-              <div class="closeBtn">
 	                        	<span>
 	                        		<b>クローズ(0)</b>
 	                        	</span>
@@ -65,7 +62,8 @@
                 <thead class="tableHead">
                 <tr>
                   <th class="col-1">
-                    <input type="checkbox" id="checkAll"/>
+                    <input type="checkbox" name="select-all" id="select-all"/>ToggleAll
+                    <br/>
                   </th>
                   <th class="col-1">キャンペーンID</th>
                   <th class="col-1">キャンペーン名</th>
@@ -83,8 +81,12 @@
                   </td>
                   <td class="col-1" th:text="${gs.id}"></td>
                   <td class="col-1" th:text="${gs.name}"></td>
-                  <td class="col-2" th:text="${gs.startDate}"></td>
-                  <td class="col-2" th:text="${gs.endDate}"></td>
+                  <td class="col-2" th:text="${#dates.format(gs.startDate,'yyyy-MM-dd')}">
+                    <span th:attr="onclick=|sort('${vo.date},up')|">▲</span>
+                    開始時間
+                    <span>▼</span>
+                  </td>
+                  <td class="col-2" th:text="${#dates.format(gs.endDate,'yyyy-MM-dd')}"></td>
                   <td class="col-2" th:text="${gs.flag}"></td>
                 </tr>
                 <br>
@@ -93,17 +95,57 @@
                 </th:block>
               </table>
             </div>
-              <!--<div class="campaignTable-select-wrap">
-                <select id="currentPageNo" class="campaignTable-select" name="sort">
-                  <option value="total_yes">終わりの順</option>
-                  <option value="created_at" selected="">新しい順</option>
-                </select>
-              </div>-->
             </div>
           </div><!-- /.card-body -->
         </div>
       </div><!-- /.container-fluid -->
     </div>
+  <div class="content">
+    <!-- 模态框（Modal） -->
+    <div class="modal" id="goodsSaleModal" tabindex="-1" role="dialog"
+         aria-labelledby="goodsSaleModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h6 class="modal-title" id="goodsSaleModalLabel">Modal</h6>
+          </div>
+          <div class="modal-body">
+            <form id="##">
+              <div class="form-group">
+                <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                  错误信息展示栏。
+                </div>
+              </div>
+              <input type="hidden" id="saleId">
+              <div class="form-group">
+                <label for="saleName" class="control-label">saleName:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="saleName" name="saleName"
+                       placeholder="请输入活动内容" required="true">
+              </div>
+              <div class="form-group">
+                <label for="startDate"
+                       class="control-label">开始时间:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="startDate" name="startDate"
+                       placeholder="请输入开始时间" value="##">
+              </div>
+              <div class="form-group">
+                <label for="endDate"
+                       class="control-label">结束时间:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="endDate" name="endDate"
+                       placeholder="请输入结束时间" value="##">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">取消</button>
+            <button type="button" class="btn btn-primary" id="saveSaleButton">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal -->
     <!--<div class="pages">-->
       <div class="page_wrap">
         <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
@@ -160,19 +202,6 @@
 <script th:src="@{/admin/dist/js/sale.js}"></script>
 <!--css-->
 <link rel="stylesheet" th:href="@{/admin/dist/css/sale.css}">
-<!--[if lt IE 9]>
-　　　　<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-　　<![endif]-->
-<!--responsive-->
-<!--
-<link rel="stylesheet" type="text/css"
-      media="screen and (max-device-width: 400px)"
-      href="tinyScreen.css">
-<link rel="stylesheet" type="text/css"
-      media="screen and (min-width: 400px) and (max-device-width: 600px)"
-      href="smallScreen.css">
--->
-
 
 </body>
 </html>

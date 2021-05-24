@@ -66,21 +66,6 @@ new AjaxUpload('#uploadSale', {
   }
 });
 
-
-// function saleSearch() {
-//   var q = $('#searchForCampaign').val();
-//   if (q && q != '') {
-//     window.location.href = '/admin/goods/sale?keyword=' + q;
-//   }
-// }
-
-// $("#searchForCampaign").focus(function(){
-//   var keyword=$("#searchForCampaign").val();
-//   if(keyword !=""){
-//     $("#searchForCampaign").trigger("keyup")
-//   }
-// });
-
 //search keyword
 $("#searchForCampaign").keyup(function(){
   debugger;
@@ -133,19 +118,80 @@ function addendToSearchBar(el){
   el.css({top:rect.top + sbHeight,left:rect.left,position:'absolute'});
 }
 
-function clearResultList(){
+function clearResultList() {
   //clear #searchResultUl's elements
   //foreach is javascript's method
   //$("#searchResultUl").children() is jquery
   //toArray() convert $("#searchResultUl").children() to javascript array
-  $("#saleSearchResultUl").children().toArray().forEach(function(value,index,array){
-    // check if include class name which is dumyLi
-    // value is dom html element
-    var incFlag = $(value).attr("class").includes("saleDumyLi");
-    // delete elements besides dumyLi
-    if(!incFlag){
-      $(value).remove();
+  $("#saleSearchResultUl").children().toArray().forEach(
+      function (value, index, array) {
+        // check if include class name which is dumyLi
+        // value is dom html element
+        var incFlag = $(value).attr("class").includes("saleDumyLi");
+        // delete elements besides dumyLi
+        if (!incFlag) {
+          $(value).remove();
+        }
+      })
+}
+
+//added by c 2021/05/22 check all
+$('#select-all').click(function(event) {
+  if(this.checked) {
+    // Iterate each checkbox
+    $(':checkbox').each(function() {
+      this.checked = true;
+    });
+  } else {
+    $(':checkbox').each(function() {
+      this.checked = false;
+    });
+  }
+});
+
+//added by c 2021/5/24 insertSale
+$(function () {
+  $("#modal-open").click(function () {
+    $(".modal").fadeIn();
+  });
+  $("#modal-close").click(function () {
+    $(".modal").fadeOut();
+  });
+});
+
+$("#saveSaleButton").click(function () {
+  debugger;
+  var name = $("#saleName").val();
+  var starDate = $("#startDate").val();
+  var endDate = $("#endDate").val();
+  data = {
+    "name": name,
+    "startDate": starDate,
+    "endDate": endDate,
+  };
+  $.ajax({
+    type: 'POST',//方法类型
+    url: "/admin/goods/saleInsert",
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function (result) {
+      if (result.resultCode == 200) {
+        debugger;
+        swal("保存成功", {
+          icon: "success",
+        });
+      } else {
+        swal(result.message, {
+          icon: "error",
+        });
+      }
+      ;
+    },
+    error: function () {
+      swal("操作失败", {
+        icon: "error",
+      });
     }
   })
-}
+});
 
