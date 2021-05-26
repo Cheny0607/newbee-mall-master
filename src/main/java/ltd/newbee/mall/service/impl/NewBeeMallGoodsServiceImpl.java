@@ -244,8 +244,8 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     }
     // //added by c 2021/5/24 max saleId
     @Override
-    public Long getMaxSaleId(Long id) {
-        Long maxSaleId = goodsMapper.getMaxSaleId(id);
+    public Long getMaxSaleId() {
+        Long maxSaleId = goodsMapper.findMaxSaleId();
         if(maxSaleId !=null){
             return maxSaleId + 1;
         }else{

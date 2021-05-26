@@ -50,7 +50,7 @@ public class GoodsSaleController {
     if (StringUtils.isEmpty(params.get("page"))) {
       params.put("page",1);
     }
-    params.put("limit", 3);
+    params.put("limit", 5);
     /*params.put("limit", Constants.GOODS_SEARCH_PAGE_LIMIT);*/
     //封装参数供前端回显
     if (params.containsKey("orderBy") && !StringUtils.isEmpty(params.get("orderBy") + "")) {
@@ -76,7 +76,7 @@ public class GoodsSaleController {
   public Result insertSale(@RequestBody GoodsSale goodsSale){
     Integer count = null;
     GoodsSale gsList = new GoodsSale();
-    Long saleId = newBeeMallGoodsService.getMaxSaleId(gsList.getId());
+    Long saleId = newBeeMallGoodsService.getMaxSaleId();
     gsList.setId(saleId);
     gsList.setName(goodsSale.getName());
     gsList.setStartDate(goodsSale.getStartDate());

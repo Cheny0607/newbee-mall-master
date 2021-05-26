@@ -40,7 +40,7 @@
 /*  margin-right: 0%;*/
 /*  height:auto;*/
 /*}*/
-#campaignName{
+#inputGroupSelect04{
   width: 25%;
 }
 #searchForCampaign{
@@ -78,38 +78,23 @@
   width:300px;
 }
 
-.goods_item .pages {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 35px 0 20px;
-  width: 100%;
-  height: 50px;
+/*.input-group{*/
+/*  left:0;*/
+/*  width: 25%;*/
+/*  border-color: #66afe9;*/
+/*  outline: 0;*/
+/*  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);*/
+/*  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)*/
+/*}*/
+.page_span1 {
+  width: 60%;
+  float:right;
 }
-.goods_item .pages .page_wrap {
-  width: 1226px;
+/*#goodsSaleModal{*/
+/*  width: 41.66%;*/
+/*}*/
+#gsModalContent{
+  max-height: 90vh;
+  overflow: auto;
 }
-.goods_item .pages .page_wrap .page_span1 {
-  float: right;
-}
-.goods_item .pages .page_wrap .page_span1 .active {
-  border: 0;
-  color: #1baeae;
-  background: #fff;
-}
-.goods_item .pages .page_wrap .page_span1 a {
-  font-size: 14px;
-  display: block;
-  float: left;
-  text-decoration: none;
-  height: 36px;
-  background: #f0f0f0;
-  line-height: 36px;
-  padding: 0 14px;
-  margin-right: 5px;
-  border: 1px solid #ddd;
-}
-.goods_item .pages .page_wrap .page_span1 a:nth-child(1) {
-  color: #ccc;
-  background: #fff;
-}
+

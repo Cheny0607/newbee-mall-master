@@ -769,7 +769,7 @@
     select count(*) from goods_sale
   </select>
   <!--max saleId-->
-  <select id="getMaxSaleId" parameterType="java.lang.Long" resultType="java.lang.Long">
+  <select id="findMaxSaleId" parameterType="java.lang.Long" resultType="java.lang.Long">
     select max(id) from goods_sale
   </select>
 </mapper>

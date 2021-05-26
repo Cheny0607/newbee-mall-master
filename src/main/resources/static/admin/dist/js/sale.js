@@ -6,7 +6,16 @@ $('#download').on('click',function(){
     ids.push($(this).text())
     return ids;
   })
-  if(ids == null){
+  var format = $("#inputGroupSelect04").val();
+  var index = ids.indexOf("Campaign Id");
+  if(index > -1){
+    ids.splice(index,1);
+  }
+  var data = {
+    "ids":ids,
+    "format":format
+  }
+  if(ids==null){
     swal("请选择一条记录",{
       icon:"warning",
     });
@@ -16,13 +25,13 @@ $('#download').on('click',function(){
     type:'POST',//方法类型
     url:"/admin/download/file",
     contentType: 'application/json',
-    data:JSON.stringify(ids),
+    data:JSON.stringify(data),
     success:function(result){
       debugger;
       //サーバーが成功の場合ここが呼ばれる
       if (result.resultCode == 200){
-        /*this.windows.href = result.data;
-        data.url = "/Users/chennaiyuan/Desktop/upload/test.csv"; */  //path
+        // window.location.assign(result.data);
+        // result.data = "/Users/chennaiyuan/Desktop/upload/test.csv";   //path
         Download(result.data);
       } else {
         swal(result.message,{
@@ -86,7 +95,6 @@ $("#searchForCampaign").keyup(function(){
       var str = list.name;
       var arr = str.split(" ");
       arr.filter(keyword => keyword.includes(keyword));
-      // keywordInsert(keyword);
     },
     error:function(){
       debugger;
@@ -135,6 +143,40 @@ function clearResultList() {
       })
 }
 
+//絞り込み検索 filter 2021/05/25
+(function(document) {
+  'use strict';
+  var LightTableFilter = (function(Arr) {
+    var _input;
+    function _onInputEvent(e) {
+      _input = e.target;
+      var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+      Arr.forEach.call(tables, function(table) {
+        Arr.forEach.call(table.tBodies, function(tbody) {
+          Arr.forEach.call(tbody.rows, _filter);
+        });
+      });
+    }
+    function _filter(row) {
+      var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+      row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    }
+    return {
+      init: function() {
+        var inputs = document.getElementsByClassName('light-table-filter');
+        Arr.forEach.call(inputs, function(input) {
+          input.oninput = _onInputEvent;
+        });
+      }
+    };
+  })(Array.prototype);
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === 'complete') {
+      LightTableFilter.init();
+    }
+  });
+})(document);
+
 //added by c 2021/05/22 check all
 $('#select-all').click(function(event) {
   if(this.checked) {
@@ -164,10 +206,24 @@ $("#saveSaleButton").click(function () {
   var name = $("#saleName").val();
   var starDate = $("#startDate").val();
   var endDate = $("#endDate").val();
+  var campaign = $("#campaign").val();
+  var content1 = $("#content1").val();
+  var content2 = $("#content2").val();
+  var content3 = $("#content3").val();
+  var content4 = $("#content4").val();
+  var content5 = $("#content5").val();
+  var flag = $("#flag").val();
   data = {
     "name": name,
     "startDate": starDate,
     "endDate": endDate,
+    "campaign":campaign,
+    "content1":content1,
+    "content2":content2,
+    "content3":content3,
+    "content4":content4,
+    "content5":content5,
+    "flag":flag,
   };
   $.ajax({
     type: 'POST',//方法类型
@@ -194,4 +250,75 @@ $("#saveSaleButton").click(function () {
     }
   })
 });
+
+//added by c 2021/5/25 sort
+ // カラムのクリックイベント
+  $("th").click(function(){
+    // ★span要素の独自属性（sort）の値を取得
+    var sortClass = $(this).find("span").attr("sort");
+    var sortFlag = "asc";
+    // 初期化
+    $("table thead tr span").text("");
+    $("table thead tr span").attr("sort", "");
+
+    if(isBlank(sortClass) || sortClass == "asc") {
+      $(this).find("span").text("▼");
+      // ★独自属性（sort）の値を変更する
+      $(this).find("span").attr("sort", "desc");
+      sortFlag = "desc";
+    } else if(sortClass == "desc") {
+      $(this).find("span").text("▲");
+      $(this).find("span").attr("sort", "asc");
+      sortFlag = "asc";
+    }
+
+    var element = $(this).attr("id");
+    sort(element, sortFlag);
+  });
+
+  function sort(element, sortFlag) {
+    // ★sort()で前後の要素を比較して並び変える。※対象が文字か数値で処理を変更
+    var arr = $("table tbody tr").sort(function(a, b) {
+      if ($.isNumeric($(a).find("td").eq(element).text())) {
+        // ソート対象が数値の場合
+        var a_num = Number($(a).find("td").eq(element).text());
+        var b_num = Number($(b).find("td").eq(element).text());
+
+        if(isBlank(sortFlag) || sortFlag == "desc") {
+          // 降順
+          return b_num - a_num;
+        } else {
+          // 昇順
+          return a_num - b_num;
+        }
+      } else {
+        // ソート対象が数値以外の場合
+        var sortNum = 1;
+        if($(a).find("td").eq(element).text()
+            > $(b).find("td").eq(element).text()) {
+          sortNum = 1;
+        } else {
+          sortNum = -1;
+        }
+        if(isBlank(sortFlag) || sortFlag == "desc") {
+          // 降順
+          sortNum *= (-1) ;
+        }
+
+        return sortNum;
+      }
+    });
+    // ★html()要素を置き換える
+    $("table tbody").html(arr);
+  }
+
+  //バリデーションチェック
+  function isBlank(data){
+    if (data.length ==0 || data == ''){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 

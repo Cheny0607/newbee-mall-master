@@ -100,6 +100,6 @@ public interface NewBeeMallGoodsMapper {
     List<GoodsSale> pagingGoodsSale(PageQueryUtil pageUtil);
     int getTotalGoodsSale(PageQueryUtil pageUtil);
     //added by c 2021/5/15 max saleId
-    Long getMaxSaleId(Long id);
+    Long findMaxSaleId();
 
 }

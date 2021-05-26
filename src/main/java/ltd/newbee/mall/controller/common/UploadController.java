@@ -187,7 +187,7 @@ public class UploadController {
     //added by c 2021/5/14 download csv
     @RequestMapping(value = "/download/file",method = RequestMethod.POST)
     @ResponseBody
-    public Result downloadFile(@RequestBody Integer[] ids) {
+    public Result downloadFile(@RequestBody Integer[] ids, @RequestBody String format) {
         File f = new File("/Users/chennaiyuan/Desktop/upload/test.csv");
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
@@ -199,14 +199,6 @@ public class UploadController {
                     bw.newLine();
                 }
             }
-           /* goodsSaleList.stream().forEach(goodsSale ->{
-                try{
-                    bw.write(goodsSale.toString());
-                    bw.newLine();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            });*/
             bw.close();
         } catch (IOException e) {
             //TODO Auto-generated catch block

@@ -32,123 +32,86 @@
               </button>
             </div>
             <br>
-            <div>
-              <div class="col-119">
+           <!-- <div>-->
+             <!-- <div class="col-119">
 	                        	<span>
 	                        		<b>すべて(0)</b>
 	                        	</span>
 	                        	<span>
 	                        		<b>クローズ(0)</b>
 	                        	</span>
-              </div>
+              </div>-->
+           <!-- </div>-->
+            <div>
+              <button class="btn btn-info" id="col-119">
+                す べ て
+              </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-info" id="col-119">&nbsp;クローズ
+              </button>
+
             </div>
             <br>
             <div>
               <div class="clo-6">
+<!--                <div class = "input-group">-->
                 <form name="input" action="html_form_action.php" method="get">
-                  <select type="text" name="キャンペーン名" id="campaignName"></select>
-                  <button type="Button" id="download">Download</button>
+                  <!--<select type="text" name="キャンペーン名" id="campaignName"></select>-->
+                    <select class="custom-select" id="inputGroupSelect04">
+                      <option value="selected">Choose...</option>
+                      <option value="txt">ファイル(.txt)</option>
+                      <option value="csv">ファイル(.csv)</option>
+                    </select>
+                  <!--<div class="input-group-append">-->
+                    <button type="Button" id="download">Download</button>
+                  <!--</div>-->
+<!--                </div>-->
                   <iframe id="my_iframe" style="display:none;"></iframe>
                 </form>
               </div>
               <div class="clo-6">
-                <input type="search" id="searchForCampaign" >
+                <input type="search" id="searchForCampaign" class="light-table-filter" data-table="order-table" placeholder="Search...">
                 <button id="saleSearch">絞り込み検索</button>
+                <div class="search-hot"></div>
               </div>
             </div>
             <br>
             <div class="campaignTable">
-              <table class="col-12" border="1">
+              <table class="order-table" border="1">
                 <thead class="tableHead">
                 <tr>
-                  <th class="col-1">
-                    <input type="checkbox" name="select-all" id="select-all"/>ToggleAll
+                  <th class="col-1" id="0"><span id="sort0" sort=""></span>
+                    <input type="checkbox" name="select-all" id="select-all"/>Select All
                     <br/>
                   </th>
-                  <th class="col-1">キャンペーンID</th>
-                  <th class="col-1">キャンペーン名</th>
-                  <th class="col-2">開始時間</th>
-                  <th class="col-2">終了時間</th>
-                  <th class="col-2">ステータス</th>
+                  <th class="col-1" id="1">Campaign Id<span id="sort1" sort=""></span></th>
+                  <th class="col-1" id="2">Campaign Name<span id="sort2" sort=""></span></th>
+                  <th class="col-2" id="3">開始時間<span id="sort3" sort=""></span></th>
+                  <th class="col-2" id="4">終了時間<span id="sort4" sort=""></span></th>
+                  <th class="col-2" id="5">ステータス<span id="sort5" sort=""></span></th>
                 </tr>
                 </thead>
+                <tbody>
                 <th:block th:unless="${#lists.isEmpty(pageResult.list)}">
                 <th:block th:each="gs:${pageResult.list}" th:if="${gs !=null}">
-                <tbody>
                 <tr>
                   <td>
                     <input type="checkbox"/>
                   </td>
                   <td class="col-1" th:text="${gs.id}"></td>
                   <td class="col-1" th:text="${gs.name}"></td>
-                  <td class="col-2" th:text="${#dates.format(gs.startDate,'yyyy-MM-dd')}">
-                    <span th:attr="onclick=|sort('${vo.date},up')|">▲</span>
-                    開始時間
-                    <span>▼</span>
-                  </td>
+                  <td class="col-2" th:text="${#dates.format(gs.startDate,'yyyy-MM-dd')}"></td>
                   <td class="col-2" th:text="${#dates.format(gs.endDate,'yyyy-MM-dd')}"></td>
                   <td class="col-2" th:text="${gs.flag}"></td>
                 </tr>
                 <br>
+                </th:block>
+                </th:block>
                 </tbody>
-                </th:block>
-                </th:block>
               </table>
             </div>
             </div>
-          </div><!-- /.card-body -->
-        </div>
-      </div><!-- /.container-fluid -->
-    </div>
-  <div class="content">
-    <!-- 模态框（Modal） -->
-    <div class="modal" id="goodsSaleModal" tabindex="-1" role="dialog"
-         aria-labelledby="goodsSaleModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-            <h6 class="modal-title" id="goodsSaleModalLabel">Modal</h6>
-          </div>
-          <div class="modal-body">
-            <form id="##">
-              <div class="form-group">
-                <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
-                  错误信息展示栏。
-                </div>
-              </div>
-              <input type="hidden" id="saleId">
-              <div class="form-group">
-                <label for="saleName" class="control-label">saleName:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="text" class="form-control" id="saleName" name="saleName"
-                       placeholder="请输入活动内容" required="true">
-              </div>
-              <div class="form-group">
-                <label for="startDate"
-                       class="control-label">开始时间:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="text" class="form-control" id="startDate" name="startDate"
-                       placeholder="请输入开始时间" value="##">
-              </div>
-              <div class="form-group">
-                <label for="endDate"
-                       class="control-label">结束时间:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="text" class="form-control" id="endDate" name="endDate"
-                       placeholder="请输入结束时间" value="##">
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">取消</button>
-            <button type="button" class="btn btn-primary" id="saveSaleButton">确认</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.modal -->
-    <!--<div class="pages">-->
-      <div class="page_wrap">
-        <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
+          <div class="page_wrap">
+            <th:block th:if="${null != pageResult and !#lists.isEmpty(pageResult.list)}">
             <span class="page_span1">
                  <a th:href="@{${pageResult.currPage==1}?'##':'/admin/goods/sale?keyword='+${keyword==null?'':keyword}+'&page=' + ${pageResult.currPage-1}+'&orderBy='+${orderBy==null?'':orderBy}}">
                                     < 上一页
@@ -170,9 +133,93 @@
                                     下一页 >
                                 </a>
 					</span>
-        </th:block>
+            </th:block>
+          </div>
+          </div><!-- /.card-body -->
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+  <div class="content">
+    <!-- 模态框（Modal） -->
+    <div class="modal" id="goodsSaleModal" tabindex="-1" role="dialog"
+         aria-labelledby="goodsSaleModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" id="gsModalContent">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h6 class="modal-title" id="goodsSaleModalLabel">Modal</h6>
+          </div>
+          <div class="modal-body">
+            <form id="##">
+              <div class="form-group">
+                <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                  错误信息展示栏。
+                </div>
+              </div>
+              <input type="hidden" id="saleId">
+              <div class="form-group">
+                <label for="saleName" class="control-label">saleName:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="saleName" name="saleName"
+                       placeholder="请输入活动名称" required="true">
+              </div>
+              <div class="form-group">
+                <label for="startDate"
+                       class="control-label">开始时间:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="date" class="form-control" id="startDate" name="startDate"
+                       placeholder="请输入开始时间" value="##">
+              </div>
+              <div class="form-group">
+                <label for="endDate"
+                       class="control-label">结束时间:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="date" class="form-control" id="endDate" name="endDate"
+                       placeholder="请输入结束时间" value="##">
+              </div>
+              <div class="form-group">
+                <label for="campaign" class="control-label">campaign:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="campaign" name="campaign"
+                       placeholder="请输入活动内容" required="true">
+              </div>
+              <div class="form-group">
+                <label for="content1" class="control-label">content1:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="content1" name="content1"
+                       placeholder="##" required="true">
+              </div>
+              <div class="form-group">
+                <label for="content2" class="control-label">content2:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="content2" name="content2"
+                       placeholder="##" required="true">
+              </div>
+              <div class="form-group">
+                <label for="content3" class="control-label">content3:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="content3" name="content3"
+                       placeholder="##" required="true">
+              </div>
+              <div class="form-group">
+                <label for="content4" class="control-label">campaign:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="content4" name="content4"
+                       placeholder="##" required="true">
+              </div>
+              <div class="form-group">
+                <label for="content5" class="control-label">content5:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="content5" name="content5"
+                       placeholder="##" required="true">
+              </div>
+              <div class="form-group">
+                <label for="flag" class="control-label">flag:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="flag" name="flag"
+                       placeholder="##" required="true">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">取消</button>
+            <button type="button" class="btn btn-primary" id="saveSaleButton">确认</button>
+          </div>
+        </div>
       </div>
-    <!--</div>-->
+    </div>
+    <!-- /.modal -->
     <!-- /.content-wrapper -->
     <!-- 引入页脚footer-fragment -->
     <div th:replace="admin/footer::footer-fragment"></div>

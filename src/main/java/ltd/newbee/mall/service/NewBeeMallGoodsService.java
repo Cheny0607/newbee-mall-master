@@ -118,5 +118,5 @@ public interface NewBeeMallGoodsService {
     //added by c 2021/5/15 paging goodsSale
     PageResult pagingGoodsSale(PageQueryUtil pageUtil);
     //added by c 2021/5/24 max saleId
-    Long getMaxSaleId(Long id);
+    Long getMaxSaleId();
 }
