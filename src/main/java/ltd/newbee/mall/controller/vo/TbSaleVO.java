@@ -1,8 +1,8 @@
-package ltd.newbee.mall.entity;
+package ltd.newbee.mall.controller.vo;
 
 import java.util.Date;
 
-public class TbSale {
+public class TbSaleVO {
   private Long id;
   private Long goodsId;
   private Date startDate;
@@ -19,10 +19,4 @@ public class TbSale {
 
   public Date getEndDate() { return endDate; }
   public void setEndDate(Date endDate) { this.endDate = endDate; }
-
-  @Override
-  public String toString() {
-    return "TbSale{" + "id=" + id + ", goodsId=" + goodsId + ", startDate=" + startDate +
-        ", endDate=" + endDate + '}';
-  }
 }

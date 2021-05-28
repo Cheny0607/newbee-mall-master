@@ -17,6 +17,7 @@ import java.text.ParseException;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import ltd.newbee.mall.common.Constants;
+import ltd.newbee.mall.entity.Download;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
@@ -187,28 +188,37 @@ public class UploadController {
     //added by c 2021/5/14 download csv
     @RequestMapping(value = "/download/file",method = RequestMethod.POST)
     @ResponseBody
-    public Result downloadFile(@RequestBody Integer[] ids, @RequestBody String format) {
-        File f = new File("/Users/chennaiyuan/Desktop/upload/test.csv");
+    public Result downloadFile(@RequestBody Download download) {
+        StringBuilder txCv = new StringBuilder();
+        txCv.append("."+ download.getFormat());
+        String test= "test" + txCv;
+        File f = new File(Constants.FILE_UPLOAD_DIC + test);
+        BufferedWriter bw=null;
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
-            List<GoodsSale> goodsSaleList = newBeeMallGoodsService.getGoodsSale(ids);
-            for(int i = 0;i < goodsSaleList.size();i++){
-                GoodsSale goodsSale = goodsSaleList.get(i);
-                if(goodsSale !=null) {
-                    bw.write(goodsSaleList.get(i).toString());
+            bw = new BufferedWriter(new FileWriter(f));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        List<GoodsSale> goodsSaleList = newBeeMallGoodsService.getGoodsSale(download.getIds());
+        for(int i = 0; i < goodsSaleList.size();i++) {
+            GoodsSale gs=goodsSaleList.get(i);
+            if(gs != null) {
+                try {
+                    bw.write(gs.toString());
                     bw.newLine();
+                } catch (IOException e) {
+
+                    e.printStackTrace();
                 }
             }
+        }try {
             bw.close();
         } catch (IOException e) {
-            //TODO Auto-generated catch block
             e.printStackTrace();
-            return ResultGenerator.genFailResult("文件下载失败");
         }
         Result resultSuccess = ResultGenerator.genSuccessResult();
-        resultSuccess.setData("/Users/chennaiyuan/Desktop/upload/test.csv");
+        resultSuccess.setData(Constants.FILE_UPLOAD_DIC + test);
         return resultSuccess;
     }
-
 }
 

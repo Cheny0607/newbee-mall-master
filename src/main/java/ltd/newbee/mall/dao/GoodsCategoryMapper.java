@@ -9,6 +9,9 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.TbCategory;
+import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +39,9 @@ public interface GoodsCategoryMapper {
     int deleteBatch(Integer[] ids);
 
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Long> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
+
+    //added by c 2021/5/28 mapper-1
+    List<GoodsCategory> selectByIdAndLevel(@Param("categoryLevel") int categoryLevel,@Param("categoryId") List<Long> categoryIds);
+    List<TbSale> getTbSale(Long goodsId);
+    List<TbCategory> getTbCategory(Long categoryId);
 }

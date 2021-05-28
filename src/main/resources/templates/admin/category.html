@@ -1,0 +1,125 @@
+<!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script src="../../../../../../goodsCategory.js"></script>
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- 引入页面头header-fragment -->
+  <div th:replace="admin/header::header-nav"></div>
+  <!-- 引入工具栏sidebar-fragment -->
+  <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">category</h3>
+          </div> <!-- /.card-body -->
+          <div class="card-body">
+            <div>
+              <!--<h4 class="category-title" id="acb1">-->
+              <table class="mainCategory-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <th:block th:each="qa:${saleCategoryDetail}" th:if="${category !=null}">
+                        <select class="custom-select" id="dropdownList1" th:text="${category.name}">
+                         <!-- <option value="selected">选择</option>-->
+                          <!--<option value="1">夏季大甩卖</option>
+                          <option value="2">买二送一</option>-->
+                        </select>
+                      </th:block>
+                    </td>
+                    <td>
+                        <input id="check1" type="checkbox"/>
+                       <!-- <div class="category">家电 数码 手机</div>-->
+                        家电 数码 手机
+                        <button class="button1" id="mainCategoryBtn">➕</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--</h4>-->
+            </div>
+            <br>
+            <div>
+            </div>
+          </div>
+          <ul id ="categoryResultUl">
+            <li class="dumyLi categoryLi">
+              <table>
+                <tbody class="subCategory-table">
+                <tr>
+                  <td>
+                    <select class="custom-select" id="dropdownList2">
+                      <option value="1">夏季大甩卖</option>
+                      <option value="2">买二送一</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input id="check2" type="checkbox"/>
+                    家电
+                    <button class="button2" id="subCategoryBtn1">➕</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <table>
+                <tbody class="subCategory-table">
+                <tr>
+                  <td>
+                    <select class="custom-select" id="dropdownList3">
+                      <option value="1">夏季大甩卖</option>
+                      <option value="2">买二送一</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input id="check3" type="checkbox"/>
+                    数码 手机
+                    <button class="button3" id="subCategoryBtn2">➕</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <a>
+              </a>
+            </li>
+          </ul>
+        </div><!-- /.card-body -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </div>
+  <div class="content">
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+  </div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<!-- ajaxupload -->
+<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
+<!-- wangEditor -->
+<script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/dist/js/category.js}"></script>
+<!--css-->
+<link rel="stylesheet" th:href="@{/admin/dist/css/category.css}">
+
+</body>
+</html>

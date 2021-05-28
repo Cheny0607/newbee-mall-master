@@ -11,6 +11,9 @@ package ltd.newbee.mall.service;
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexCategoryVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.TbCategory;
+import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
@@ -56,4 +59,9 @@ public interface NewBeeMallCategoryService {
      * @return
      */
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(List<Long> parentIds, int categoryLevel);
+
+    //added by c 2021/5/27 service-1
+    List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel);
+    List<TbSale> getTbSale(Long goodsId);
+    List<TbCategory> getTbCategory(Long categoryId);
 }

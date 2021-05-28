@@ -209,4 +209,21 @@
       update_user = #{updateUser,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=BIGINT}
   </update>
+  <!--added by c 2021/05/28 xml-1-->
+  <select id="selectByIdAndLevel" parameterType="ltd.newbee.mall.entity.GoodsCategory">
+    select category_id, category_level, parent_id,category_name, category_rank, is_deleted,
+    create_time, create_user, update_time,update_user from tb_newbee_mall_goods_category
+    <where>
+        and category_id = #{categoryId,jdbcType=BIGINT}
+        and category_level = #{categoryLevel,jdbcType=TINYINT}
+    </where>
+  </select>
+  <select id="getTbCategory" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbCategory">
+    select id,category_id,name,start_date,end_date from tb_category
+    where category_id = #{categoryId,jdbscType=BIGINT}
+  </select>
+  <select id="getTbSale" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbSale">
+    select id,goods_id,start_date,end_date from tb_sale
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
 </mapper>

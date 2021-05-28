@@ -17,6 +17,8 @@ import ltd.newbee.mall.controller.vo.SecondLevelCategoryVO;
 import ltd.newbee.mall.controller.vo.ThirdLevelCategoryVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.TbCategory;
+import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -163,5 +165,21 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
     @Override
     public List<GoodsCategory> selectByLevelAndParentIdsAndNumber(List<Long> parentIds, int categoryLevel) {
         return goodsCategoryMapper.selectByLevelAndParentIdsAndNumber(parentIds, categoryLevel, 0);//0代表查询所有
+    }
+
+    //added by c 2021/5/28 serviceImpl-1
+    @Override
+    public List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel) {
+        return goodsCategoryMapper.selectByIdAndLevel(categoryLevel, categoryIds);//0代表查询所有
+    }
+    @Override
+    public List<TbSale>getTbSale(Long goodsId){
+        List<TbSale> tbSaleList = goodsCategoryMapper.getTbSale(goodsId);
+        return tbSaleList;
+    }
+    @Override
+    public List<TbCategory>getTbCategory(Long categoryId){
+        List<TbCategory> tbCategoryList = goodsCategoryMapper.getTbCategory(categoryId);
+        return tbCategoryList;
     }
 }
