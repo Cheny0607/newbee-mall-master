@@ -25,30 +25,41 @@
           </div> <!-- /.card-body -->
           <div class="card-body">
             <div>
-              <!--<h4 class="category-title" id="acb1">-->
               <table class="mainCategory-table">
                 <tbody>
+                <th:block th:unless="${#lists.isEmpty(joinList)}">
+                <th:block th:each="firstLevel:${joinList}">
                   <tr>
                     <td>
-                      <th:block th:each="qa:${saleCategoryDetail}" th:if="${category !=null}">
-                        <select class="custom-select" id="dropdownList1" th:text="${category.name}">
-                         <!-- <option value="selected">选择</option>-->
-                          <!--<option value="1">夏季大甩卖</option>
-                          <option value="2">买二送一</option>-->
-                        </select>
-                      </th:block>
+                      <select class="custom-select" id="dropdownList1">
+                        <option th:each="gs:${gsList}"
+                                th:text="${gs.name}"
+                                th:value="${gs.id}"
+                                th:selected="${gs.id == firstLevel.id} ? true:false">
+                        </option>
+                      </select>
                     </td>
                     <td>
-                        <input id="check1" type="checkbox"/>
-                       <!-- <div class="category">家电 数码 手机</div>-->
-                        家电 数码 手机
-                        <button class="button1" id="mainCategoryBtn">➕</button>
+                        <input class="check1" type="checkbox"
+                               th:value="${firstLevel.categoryId}"
+                               th:checked="${firstLevel.id}!=null ? true:false" th:text="${firstLevel.categoryName}"/>
+                      <span>開始日
+                        <input class="startDate" type="date" id="date1" th:value="${#dates.format(firstLevel.startDate,'yyyy-MM-dd')}">
+                      </span>
+                      <span>終了日
+                        <input class="endDate" type="date" id="date2" th:value="${#dates.format(firstLevel.endDate,'yyyy-MM-dd')}">
+                      </span>
+                        <button class="button1" id="mainCategoryBtn" th:if="${firstLevel.id}">➕</button>
                     </td>
                   </tr>
+                </th:block>
+                </th:block>
                 </tbody>
               </table>
-              <!--</h4>-->
             </div>
+            <button class="btn btn-info" id="modal-open">
+              <i class="fa fa-plus"></i>&nbsp;买二送一
+            </button>
             <br>
             <div>
             </div>
@@ -98,6 +109,44 @@
     </div><!-- /.container-fluid -->
   </div>
   <div class="content">
+    <!-- 模态框（Modal） -->
+    <div class="modal" id="campaignSetModal" tabindex="-1" role="dialog"
+         aria-labelledby="campaignSetModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" id="csModalContent">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h6 class="modal-title" id="goodsSaleModalLabel">Modal</h6>
+          </div>
+          <div class="modal-body">
+            <form id="##">
+              <div class="form-group">
+                <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                  错误信息展示栏。
+                </div>
+              </div>
+              <input type="hidden" id="saleId">
+              <div class="form-group">
+                <label for="primaryGoodsId" class="control-label">primaryGoodsId:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="primaryGoodsId" name="primaryGoodsId"
+                       placeholder="请输入" required="true">
+              </div>
+              <div class="form-group">
+                <label for="subGoodsId" class="control-label">subGoodsId:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control" id="subGoodsId" name="subGoodsId"
+                       placeholder="请输入" required="true">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">取消</button>
+            <button type="button" class="btn btn-primary" id="saveSaleButton">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal -->
     <!-- /.content-wrapper -->
     <!-- 引入页脚footer-fragment -->
     <div th:replace="admin/footer::footer-fragment"></div>

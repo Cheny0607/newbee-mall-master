@@ -16,9 +16,11 @@ import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
 import ltd.newbee.mall.controller.vo.SecondLevelCategoryVO;
 import ltd.newbee.mall.controller.vo.ThirdLevelCategoryVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
+import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.MainCategory;
 import ltd.newbee.mall.entity.TbCategory;
-import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -168,18 +170,65 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
     }
 
     //added by c 2021/5/28 serviceImpl-1
+//    @Override
+//    public List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel) {
+//        return goodsCategoryMapper.selectByIdAndLevel(categoryLevel, categoryIds);//0代表查询所有
+//    }
+//    @Override
+//    public List<TbSale>getTbSale(Long goodsId){
+//        List<TbSale> tbSaleList = goodsCategoryMapper.findTbSale(goodsId);
+//        return tbSaleList;
+//    }
+//    @Override
+//    public List<TbCategory>getTbCategory(Long categoryId){
+//        List<TbCategory> tbCategoryList = goodsCategoryMapper.findTbCategory(categoryId);
+//        return tbCategoryList;
+//    }
     @Override
-    public List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel) {
-        return goodsCategoryMapper.selectByIdAndLevel(categoryLevel, categoryIds);//0代表查询所有
+    public List<GoodsSale>getGoodsSale(){
+        List<GoodsSale> gsList = goodsCategoryMapper.getGoodsSale();
+        return gsList;
     }
     @Override
-    public List<TbSale>getTbSale(Long goodsId){
-        List<TbSale> tbSaleList = goodsCategoryMapper.getTbSale(goodsId);
-        return tbSaleList;
+    public List<MainCategory>findFirstLevel(Long categoryId){
+        List<MainCategory> joinList = goodsCategoryMapper.selectFirstLevel(categoryId);
+        return joinList;
     }
     @Override
-    public List<TbCategory>getTbCategory(Long categoryId){
-        List<TbCategory> tbCategoryList = goodsCategoryMapper.getTbCategory(categoryId);
-        return tbCategoryList;
+    public boolean deleteCampaign(Long categoryId) {
+//        if (categoryId !=null) {
+//            return false;
+//        }
+        return goodsCategoryMapper.deleteCampaign(categoryId) > 0;
+    }
+    //added by c 2021/6/1 insert
+    @Override
+    public int insertCampaign(TbCategory tbCategory) {
+        int count = goodsCategoryMapper.insertTbCategory(tbCategory);
+        return count;
+    }
+    @Override
+    public Boolean compareCampaign(TbCategory tbCategory){
+        List<GoodsSale> gsList = goodsCategoryMapper.selectGoodsSale(tbCategory.getId());
+        if (tbCategory.getStartDate().compareTo(gsList.get(0).getStartDate())>0
+            && tbCategory.getEndDate().compareTo(gsList.get(0).getEndDate())<0){
+            return true;
+        }
+        return false;
+    }
+    //added by c modal
+    @Override
+    public int insertCampaignSet(CampaignSet campaignSet) {
+        int count = goodsCategoryMapper.insertCampaignSet(campaignSet);
+        return count;
+    }
+    @Override
+    public Long getMaxId() {
+        Long maxId = goodsCategoryMapper.findMaxId();
+        if(maxId !=null){
+            return maxId + 1;
+        }else{
+            return 1L;
+        }
     }
 }

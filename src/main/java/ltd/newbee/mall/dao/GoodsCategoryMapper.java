@@ -8,8 +8,10 @@
  */
 package ltd.newbee.mall.dao;
 
+import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.MainCategory;
 import ltd.newbee.mall.entity.TbCategory;
 import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -41,7 +43,17 @@ public interface GoodsCategoryMapper {
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Long> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
 
     //added by c 2021/5/28 mapper-1
-    List<GoodsCategory> selectByIdAndLevel(@Param("categoryLevel") int categoryLevel,@Param("categoryId") List<Long> categoryIds);
-    List<TbSale> getTbSale(Long goodsId);
-    List<TbCategory> getTbCategory(Long categoryId);
+//    List<GoodsCategory> selectByIdAndLevel(@Param("categoryLevel") int categoryLevel,@Param("categoryId") List<Long> categoryIds);
+//    List<TbSale> findTbSale(Long goodsId);
+//    List<TbCategory> findTbCategory(Long categoryId);
+    List<GoodsSale> getGoodsSale();
+    List<MainCategory> selectFirstLevel(Long categoryId);
+    //delete
+    int deleteCampaign(Long categoryId);
+    //added by c 2021/6/1 insert
+    int insertTbCategory(TbCategory tbCategory);
+    List<GoodsSale> selectGoodsSale(Long id);
+    //modal
+    int insertCampaignSet(CampaignSet campaignSet);
+    Long findMaxId();
 }

@@ -33,12 +33,12 @@
 .button1 {
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
-  padding: 6px 8px;
+  padding: 5px 5px;
   text-align: center;
   background-color: white;
   color: black;
   border: 2px solid #4CAF50;
-  border-radius:5px;
+  border-radius:4px;
 }
 .button1:hover {
   background-color: #4CAF50;
@@ -56,4 +56,13 @@
   max-height: 360px;
   background-color: #fff;
   width:300px;
+}
+#date1{
+  width: 25%;
+}
+#date2{
+  width: 25%;
+}
+#modal-open{
+  width: 8.33%;
 }

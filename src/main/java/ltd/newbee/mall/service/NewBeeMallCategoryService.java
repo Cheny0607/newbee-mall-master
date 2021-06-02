@@ -10,10 +10,11 @@ package ltd.newbee.mall.service;
 
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexCategoryVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
+import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.MainCategory;
 import ltd.newbee.mall.entity.TbCategory;
-import ltd.newbee.mall.entity.TbSale;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
@@ -61,7 +62,17 @@ public interface NewBeeMallCategoryService {
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(List<Long> parentIds, int categoryLevel);
 
     //added by c 2021/5/27 service-1
-    List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel);
-    List<TbSale> getTbSale(Long goodsId);
-    List<TbCategory> getTbCategory(Long categoryId);
+//    List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel);
+//    List<TbSale> getTbSale(Long goodsId);
+//    List<TbCategory> getTbCategory(Long categoryId);
+    List<GoodsSale> getGoodsSale();
+    List<MainCategory> findFirstLevel(Long categoryId);
+    boolean deleteCampaign(Long categoryId);
+    //added by c 2021/6/1 insert
+    int insertCampaign(TbCategory tbCategory);
+    Boolean compareCampaign(TbCategory tbCategory);
+//    List<GoodsSale> selectGoodsSale(Long id);
+    //added by c modal
+    int insertCampaignSet(CampaignSet campaignSet);
+    Long getMaxId();
 }

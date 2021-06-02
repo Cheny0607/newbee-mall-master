@@ -139,3 +139,138 @@ function keywordInsert(keyword){
     }
   })
 }
+
+$(".check1").change(function() {
+  debugger;
+  var ischecked = $(this).is(':checked');
+  if (!ischecked) {
+    var categoryId = $(this).val();
+  var url = "/admin/campaign/delete";
+  var swlMessage = '刪除成功';
+  $.ajax({
+    type: 'POST',//方法类型
+    url: url,
+    contentType: 'application/json',
+    data: JSON.stringify(categoryId),
+    success: function (result) {
+      if (result.resultCode == 200) {
+        swal({
+          title: swlMessage,
+          type: 'success',
+          showCancelButton: false,
+          confirmButtonColor: '#1baeae',
+          confirmButtonText: '確定',
+          confirmButtonClass: 'btn btn-success',
+          buttonsStyling: false
+        })
+      } else {
+        swal(result.message, {
+          icon: "error",
+        });
+      };
+    },
+    error: function () {
+      swal("操作失败", {
+        icon: "error",
+      });
+    }
+  });
+  } else {
+    debugger;
+    var ischecked = $(this).is(':checked');
+    var id = $(this).parent().parent().find('.custom-select').val();
+    ;
+    var startDate = $(this).parent().find('.startDate').val();
+    var endDate = $(this).parent().find('.endDate').val();
+    if (!ischecked) {
+      var categoryId = $(this).val();
+    }
+    if (ischecked) {
+      var categoryId = $(this).val();
+    }
+    var data = {
+      "id": id,
+      "categoryId": categoryId,
+      "startDate": startDate,
+      "endDate": endDate,
+    }
+    var url = "/admin/campaign/save";
+    var swlMessage = '插入成功';
+    // var url = "/admin/campaign/delete";
+    // var swlMessage = '刪除成功';
+    $.ajax({
+      type: 'POST',//方法类型
+      url: url,
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function (result) {
+        if (result.resultCode == 200) {
+          swal({
+            title: swlMessage,
+            type: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#1baeae',
+            confirmButtonText: '確定',
+            confirmButtonClass: 'btn btn-success',
+            buttonsStyling: false
+          })
+        } else {
+          swal(result.message, {
+            icon: "error",
+          });
+        };
+      },
+      error: function () {
+        swal("操作失败", {
+          icon: "error",
+        });
+      }
+    });
+  }
+});
+
+//modal
+//added by c 2021/5/24 insertSale
+$(function () {
+  $("#modal-open").click(function () {
+    $(".modal").fadeIn();
+  });
+  $("#modal-close").click(function () {
+    $(".modal").fadeOut();
+  });
+});
+
+$("#saveSaleButton").click(function () {
+  debugger;
+  var primaryGoodsId = $("#primaryGoodsId").val();
+  var subGoodsId = $("#subGoodsId").val();
+  data = {
+    "primaryGoodsId": primaryGoodsId,
+    "subGoodsId": subGoodsId,
+  };
+  $.ajax({
+    type: 'POST',//方法类型
+    url: "/admin/campaignSet/insert",
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function (result) {
+      if (result.resultCode == 200) {
+        debugger;
+        swal("保存成功", {
+          icon: "success",
+        });
+      } else {
+        swal(result.message, {
+          icon: "error",
+        });
+      }
+      ;
+    },
+    error: function () {
+      swal("操作失败", {
+        icon: "error",
+      });
+    }
+  })
+});
+

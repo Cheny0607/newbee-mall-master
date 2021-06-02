@@ -88,6 +88,5 @@ public class GoodsSaleController {
       return ResultGenerator.genFailResult("投稿失敗");
     }
     return ResultGenerator.genSuccessResult(count);
-
   }
 }

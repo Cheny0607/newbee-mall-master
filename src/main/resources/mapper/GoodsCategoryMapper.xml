@@ -210,20 +210,130 @@
     where category_id = #{categoryId,jdbcType=BIGINT}
   </update>
   <!--added by c 2021/05/28 xml-1-->
-  <select id="selectByIdAndLevel" parameterType="ltd.newbee.mall.entity.GoodsCategory">
+ <!-- <select id="selectByIdAndLevel" parameterType="ltd.newbee.mall.entity.GoodsCategory">
     select category_id, category_level, parent_id,category_name, category_rank, is_deleted,
     create_time, create_user, update_time,update_user from tb_newbee_mall_goods_category
     <where>
         and category_id = #{categoryId,jdbcType=BIGINT}
         and category_level = #{categoryLevel,jdbcType=TINYINT}
     </where>
-  </select>
-  <select id="getTbCategory" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbCategory">
+  </select>-->
+  <!--<select id="findTbCategory" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbCategory">
     select id,category_id,name,start_date,end_date from tb_category
     where category_id = #{categoryId,jdbscType=BIGINT}
   </select>
-  <select id="getTbSale" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbSale">
+  <select id="findTbSale" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbSale">
     select id,goods_id,start_date,end_date from tb_sale
     where goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>-->
+  <select id="getGoodsSale" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsSale">
+    select id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag from goods_sale
+  </select>
+  <select id="selectFirstLevel" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.MainCategory">
+    select n.category_id,n.parent_id,n.category_name,t.id,t.category_id,t.name,t.start_date,t.end_date from tb_newbee_mall_goods_category
+    as n left join tb_category as t on n.category_id = t.category_id where parent_id = 0
+  </select>
+  <!--delete-->
+  <delete id="deleteCampaign" parameterType="java.lang.Long">
+    delete from tb_category
+    where category_id = #{categoryId,jdbcType=BIGINT}
+  </delete>
+  <!--added by c 2021/6/1 insert-->
+  <insert id="insertTbCategory" parameterType="ltd.newbee.mall.entity.TbCategory">
+    insert into tb_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id !=null">
+        id,
+      </if>
+      <if test="categoryId !=null">
+        category_id,
+      </if>
+      <if test="name !=null">
+        name,
+      </if>
+      <if test="startDate !=null">
+        start_date,
+      </if>
+      <if test="endDate !=null">
+        end_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+ <!-- <select id="findMaxCampaignId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select max(id) from tb_category
+  </select>-->
+  <select id="selectGoodsSale" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsSale">
+    select id,name,start_date,end_date,campaign,content1,content2,content3,content4,content5,flag from goods_sale
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--modal-->
+  <insert id="insertCampaignSet" parameterType="ltd.newbee.mall.entity.CampaignSet">
+    insert into campaign_set
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id !=null">
+        id,
+      </if>
+      <if test="campaignId !=null">
+        campaign_id,
+      </if>
+      <if test="primaryGoodsId !=null">
+        primary_goods_id,
+      </if>
+      <if test="categoryId !=null">
+        category_id,
+      </if>
+      <if test="subGoodsId !=null">
+        sub_goods_id,
+      </if>
+      <if test="startDate !=null">
+        start_date,
+      </if>
+      <if test="endDate !=null">
+        end_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="campaignId != null">
+        #{campaignId,jdbcType=BIGINT},
+      </if>
+      <if test="primaryGoodsId != null">
+        #{primaryGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="subGoodsId != null">
+        #{subGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="findMaxId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select max(id) from campaign_set
   </select>
 </mapper>
