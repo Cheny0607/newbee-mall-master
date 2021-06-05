@@ -7,7 +7,6 @@ public class MainCategory {
   private Long parentId;
   private String categoryName;
   private Long id;
-  private String name;
   private Date startDate;
   private Date endDate;
 
@@ -23,9 +22,6 @@ public class MainCategory {
   public Long getId() { return id; }
   public void setId(Long id) { this.id = id; }
 
-  public String getName() { return name; }
-  public void setName(String name) { this.name = name; }
-
   public Date getStartDate() { return startDate; }
   public void setStartDate(Date startDate) { this.startDate = startDate; }
 
@@ -35,7 +31,7 @@ public class MainCategory {
   @Override
   public String toString() {
     return "MainCategory{" + "categoryId=" + categoryId + ", parentId=" + parentId +
-        ", categoryName='" + categoryName + '\'' + ", id=" + id + ", name='" + name + '\'' +
+        ", categoryName='" + categoryName + '\'' + ", id=" + id +
         ", startDate=" + startDate + ", endDate=" + endDate + '}';
   }
 }

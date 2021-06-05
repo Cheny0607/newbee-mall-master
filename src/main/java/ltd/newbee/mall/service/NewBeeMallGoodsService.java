@@ -112,11 +112,11 @@ public interface NewBeeMallGoodsService {
     List<TbCategory> getTbCategory(Long id);
     List<GoodsCoupon> getGoodsCoupon(Long couponId);
     int insertGoodsSale(GoodsSale goodsSale);
-   /* int insertTbSale(TbSale id);
-    int insertTbCategory(TbCategory id);
-    int insertGoodsCoupon(GoodsCoupon couponId);*/
     //added by c 2021/5/15 paging goodsSale
     PageResult pagingGoodsSale(PageQueryUtil pageUtil);
     //added by c 2021/5/24 max saleId
     Long getMaxSaleId();
+    //modal dropDownList
+//    List<NewBeeMallGoods> findCategoryId(Long categoryId);
+    List<NewBeeMallGoods> findListByGoodsId(Long goodsId);
 }

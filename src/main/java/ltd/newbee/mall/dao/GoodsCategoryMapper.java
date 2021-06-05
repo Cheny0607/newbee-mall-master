@@ -42,10 +42,7 @@ public interface GoodsCategoryMapper {
 
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Long> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
 
-    //added by c 2021/5/28 mapper-1
-//    List<GoodsCategory> selectByIdAndLevel(@Param("categoryLevel") int categoryLevel,@Param("categoryId") List<Long> categoryIds);
-//    List<TbSale> findTbSale(Long goodsId);
-//    List<TbCategory> findTbCategory(Long categoryId);
+    //added by c 2021/5/28 mapper
     List<GoodsSale> getGoodsSale();
     List<MainCategory> selectFirstLevel(Long categoryId);
     //delete
@@ -56,4 +53,6 @@ public interface GoodsCategoryMapper {
     //modal
     int insertCampaignSet(CampaignSet campaignSet);
     Long findMaxId();
+    //popUp
+    List<MainCategory> selectParentId(Long categoryId);
 }

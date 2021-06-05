@@ -169,21 +169,7 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
         return goodsCategoryMapper.selectByLevelAndParentIdsAndNumber(parentIds, categoryLevel, 0);//0代表查询所有
     }
 
-    //added by c 2021/5/28 serviceImpl-1
-//    @Override
-//    public List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel) {
-//        return goodsCategoryMapper.selectByIdAndLevel(categoryLevel, categoryIds);//0代表查询所有
-//    }
-//    @Override
-//    public List<TbSale>getTbSale(Long goodsId){
-//        List<TbSale> tbSaleList = goodsCategoryMapper.findTbSale(goodsId);
-//        return tbSaleList;
-//    }
-//    @Override
-//    public List<TbCategory>getTbCategory(Long categoryId){
-//        List<TbCategory> tbCategoryList = goodsCategoryMapper.findTbCategory(categoryId);
-//        return tbCategoryList;
-//    }
+    //added by c 2021/5/28 serviceImpl
     @Override
     public List<GoodsSale>getGoodsSale(){
         List<GoodsSale> gsList = goodsCategoryMapper.getGoodsSale();
@@ -196,9 +182,6 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
     }
     @Override
     public boolean deleteCampaign(Long categoryId) {
-//        if (categoryId !=null) {
-//            return false;
-//        }
         return goodsCategoryMapper.deleteCampaign(categoryId) > 0;
     }
     //added by c 2021/6/1 insert
@@ -210,11 +193,16 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
     @Override
     public Boolean compareCampaign(TbCategory tbCategory){
         List<GoodsSale> gsList = goodsCategoryMapper.selectGoodsSale(tbCategory.getId());
-        if (tbCategory.getStartDate().compareTo(gsList.get(0).getStartDate())>0
-            && tbCategory.getEndDate().compareTo(gsList.get(0).getEndDate())<0){
+        if (tbCategory.getStartDate().compareTo(gsList.get(0).getStartDate())>=0
+            && tbCategory.getEndDate().compareTo(gsList.get(0).getEndDate())<=0){
             return true;
         }
         return false;
+    }
+    @Override
+    public List<GoodsSale>selectGoodsSale(Long id){
+        List<GoodsSale> gsList = goodsCategoryMapper.selectGoodsSale(id);
+        return gsList;
     }
     //added by c modal
     @Override
@@ -230,5 +218,11 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
         }else{
             return 1L;
         }
+    }
+    //popUp
+    @Override
+    public List<MainCategory>selectParentId(Long categoryId){
+        List<MainCategory> joinList = goodsCategoryMapper.selectParentId(categoryId);
+        return joinList;
     }
 }

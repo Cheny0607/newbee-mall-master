@@ -25,7 +25,7 @@
           </div> <!-- /.card-body -->
           <div class="card-body">
             <div>
-              <table class="mainCategory-table">
+              <table class="mainCategory-table"><!--border="1"-->
                 <tbody>
                 <th:block th:unless="${#lists.isEmpty(joinList)}">
                 <th:block th:each="firstLevel:${joinList}">
@@ -49,7 +49,8 @@
                       <span>終了日
                         <input class="endDate" type="date" id="date2" th:value="${#dates.format(firstLevel.endDate,'yyyy-MM-dd')}">
                       </span>
-                        <button class="button1" id="mainCategoryBtn" th:if="${firstLevel.id}">➕</button>
+                        <button class="button1" id="mainCategoryBtn"
+                                th:value="${firstLevel.categoryId}" th:if="${firstLevel.id}">➕</button>
                     </td>
                   </tr>
                 </th:block>
@@ -57,11 +58,11 @@
                 </tbody>
               </table>
             </div>
-            <button class="btn btn-info" id="modal-open">
-              <i class="fa fa-plus"></i>&nbsp;买二送一
-            </button>
             <br>
             <div>
+              <button class="btn btn-info" id="modal-open">
+                <i class="fa fa-plus"></i>&nbsp;买二送一
+              </button>
             </div>
           </div>
           <ul id ="categoryResultUl">
@@ -71,37 +72,24 @@
                 <tr>
                   <td>
                     <select class="custom-select" id="dropdownList2">
-                      <option value="1">夏季大甩卖</option>
-                      <option value="2">买二送一</option>
+                      <option value="">Choose...</option>
                     </select>
                   </td>
                   <td>
                     <input id="check2" type="checkbox"/>
-                    家电
+                    <a>
+                    </a>
+                    <span>開始日
+                        <input class="start" type="date" id="date3">
+                    </span>
+                    <span>終了日
+                        <input class="end" type="date" id="date4">
+                    </span>
                     <button class="button2" id="subCategoryBtn1">➕</button>
                   </td>
                 </tr>
                 </tbody>
               </table>
-              <table>
-                <tbody class="subCategory-table">
-                <tr>
-                  <td>
-                    <select class="custom-select" id="dropdownList3">
-                      <option value="1">夏季大甩卖</option>
-                      <option value="2">买二送一</option>
-                    </select>
-                  </td>
-                  <td>
-                    <input id="check3" type="checkbox"/>
-                    数码 手机
-                    <button class="button3" id="subCategoryBtn2">➕</button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-              <a>
-              </a>
             </li>
           </ul>
         </div><!-- /.card-body -->
@@ -134,8 +122,13 @@
               </div>
               <div class="form-group">
                 <label for="subGoodsId" class="control-label">subGoodsId:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="text" class="form-control" id="subGoodsId" name="subGoodsId"
-                       placeholder="请输入" required="true">
+                <select class="custom-select" id="subGoodsId">
+                  <option value="selected">选择...</option>
+                  <option value="1">耳机</option>
+                  <option value="2">充电线</option>
+                </select>
+                <!--<input type="text" class="form-control" id="subGoodsId" name="subGoodsId"
+                       placeholder="请输入" required="true">-->
               </div>
             </form>
           </div>

@@ -2,6 +2,7 @@ package ltd.newbee.mall.controller.admin;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -66,9 +67,6 @@ public class CategoryController {
   @RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
   @ResponseBody
   public Result deleteCampaign(@RequestBody Long categoryId) {
-//    if (categoryId !=null) {
-//      return ResultGenerator.genFailResult("参数异常！");
-//    }
     if (newBeeMallCategoryService.deleteCampaign(categoryId)) {
       return ResultGenerator.genSuccessResult();
     } else {
@@ -89,8 +87,9 @@ public class CategoryController {
       }
       return ResultGenerator.genSuccessResult(count);
     }
-    return ResultGenerator.genSuccessResult("期間外です");
+    return ResultGenerator.genFailResult("期間外です");
   }
+
   //added by c modal
   @RequestMapping(value = "/campaignSet/insert",method = RequestMethod.POST)
   @ResponseBody
@@ -108,5 +107,32 @@ public class CategoryController {
       return ResultGenerator.genFailResult("投稿失敗");
     }
     return ResultGenerator.genSuccessResult(count);
+  }
+  //modal dropDownList
+  @RequestMapping(value = "/giftGoods",method = RequestMethod.POST)
+  @ResponseBody
+  public Result findListByGoodsId(@RequestBody Long goodsId){
+    List<NewBeeMallGoods> goodsList = newBeeMallGoodsService.findListByGoodsId(goodsId);
+    return ResultGenerator.genSuccessResult(goodsList);
+  }
+
+  //popUp
+  @RequestMapping(value = "/popUp/page",method = RequestMethod.POST)
+  @ResponseBody
+  public Result selectParentId(@RequestBody Long categoryId){
+    MainCategory list = new MainCategory();
+    list.setParentId(categoryId);
+    List<GoodsSale> gsList = new ArrayList<GoodsSale>();
+    List<MainCategory> subCategoryList = newBeeMallCategoryService.selectParentId(list.getParentId());
+    for (int i=0; i<subCategoryList.size();i++){
+      if(subCategoryList.get(i).getId()!=null){
+        List<GoodsSale> c = newBeeMallCategoryService.selectGoodsSale(subCategoryList.get(i).getId());
+        gsList.addAll(c);
+      }
+    }
+    Map<Object,List> result = new HashMap<>();
+    result.put("subCategoryList",subCategoryList);
+    result.put("gsList",gsList);
+    return ResultGenerator.genSuccessResult(result);
   }
 }

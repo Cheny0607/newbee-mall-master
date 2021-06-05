@@ -272,4 +272,12 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         PageResult pageResult = new PageResult(gsSortList,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
     }
+
+    //modal dropDownList
+    @Override
+    public List<NewBeeMallGoods> findListByGoodsId(Long goodsId){
+        List<NewBeeMallGoods> goods = goodsMapper.findListByGoodsId(goodsId);
+        List<NewBeeMallGoods> goodsList = goodsMapper.findCategoryId(goods.get(0).getGoodsCategoryId());
+        return goodsList;
+    }
 }

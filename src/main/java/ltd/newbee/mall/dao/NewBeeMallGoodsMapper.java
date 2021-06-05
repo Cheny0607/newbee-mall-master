@@ -82,8 +82,6 @@ public interface NewBeeMallGoodsMapper {
     boolean updateReviewNum(GoodsReviewHelpedNum goodsReviewHelpedNum);
     long getGoodsReviewNum(int reviewId);
     //added by c 2021/5/7
-   /* List<GoodsReview> pagingReviewLi(PageQueryUtil pageUtil);
-    int getTotalGoodsReview(PageQueryUtil pageUtil);*/
     //added by c 2021/5/10 insert search history
     int insertSearchHistory(SearchHistory keyword);
     Long getMaxSearchId(Long userId);
@@ -101,5 +99,8 @@ public interface NewBeeMallGoodsMapper {
     int getTotalGoodsSale(PageQueryUtil pageUtil);
     //added by c 2021/5/15 max saleId
     Long findMaxSaleId();
+    //modal dropDownList
+    List<NewBeeMallGoods> findCategoryId(Long categoryId);
+    List<NewBeeMallGoods> findListByGoodsId(Long goodsId);
 
 }

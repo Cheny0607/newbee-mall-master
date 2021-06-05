@@ -754,14 +754,24 @@
       limit #{start},#{limit}
     </if>
   </select>
- <!-- <select id="getTotalGoodsSale" parameterType="Map" resultType="int">
-    select count(*) from goods_sale where id = #{id,jdbcType=BIGINT}
-  </select>-->
   <select id="getTotalGoodsSale" parameterType="Map" resultType="int">
     select count(*) from goods_sale
   </select>
   <!--max saleId-->
   <select id="findMaxSaleId" parameterType="java.lang.Long" resultType="java.lang.Long">
     select max(id) from goods_sale
+  </select>
+  <!--modal dropDownList-->
+  <select id="findCategoryId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_newbee_mall_goods_info
+    where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT}
+  </select>
+  <select id="findListByGoodsId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_newbee_mall_goods_info
+    where goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
 </mapper>

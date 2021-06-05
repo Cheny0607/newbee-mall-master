@@ -61,18 +61,17 @@ public interface NewBeeMallCategoryService {
      */
     List<GoodsCategory> selectByLevelAndParentIdsAndNumber(List<Long> parentIds, int categoryLevel);
 
-    //added by c 2021/5/27 service-1
-//    List<GoodsCategory> selectByIdAndLevel(List<Long> categoryIds, int categoryLevel);
-//    List<TbSale> getTbSale(Long goodsId);
-//    List<TbCategory> getTbCategory(Long categoryId);
+    //added by c 2021/5/27 service
     List<GoodsSale> getGoodsSale();
     List<MainCategory> findFirstLevel(Long categoryId);
     boolean deleteCampaign(Long categoryId);
     //added by c 2021/6/1 insert
     int insertCampaign(TbCategory tbCategory);
     Boolean compareCampaign(TbCategory tbCategory);
-//    List<GoodsSale> selectGoodsSale(Long id);
+    List<GoodsSale> selectGoodsSale(Long id);
     //added by c modal
     int insertCampaignSet(CampaignSet campaignSet);
     Long getMaxId();
+    //popUp
+    List<MainCategory> selectParentId(Long categoryId);
 }
