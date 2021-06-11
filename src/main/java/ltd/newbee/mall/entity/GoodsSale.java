@@ -1,11 +1,14 @@
 package ltd.newbee.mall.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class GoodsSale {
   private Long id;
   private String name;
+  @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+9")
   private Date startDate;
+  @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+9")
   private Date endDate;
   private String campaign;
   private String content1;

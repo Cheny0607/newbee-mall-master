@@ -47,15 +47,16 @@
 .dumyLi{
   display:none;
 }
-#searchResultUl{
-  display:none;
+#categoryResultUl{
+  /*display:none;*/
+  overflow: scroll;
   z-index:1000;
   border: 1px solid #c5c5c5;
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 360px;
+  max-height: 500px;
   background-color: #fff;
-  width:300px;
+  width:33.33%;
 }
 #date1{
   width: 25%;
@@ -72,6 +73,6 @@
 #modal-open{
   width: 16.66%;
 }
-.card-primary{
-  overflow: auto;
+.card{
+  overflow-x: auto;
 }
