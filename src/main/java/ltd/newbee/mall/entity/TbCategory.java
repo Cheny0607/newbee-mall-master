@@ -3,10 +3,14 @@ package ltd.newbee.mall.entity;
 import java.util.Date;
 
 public class TbCategory {
+  private Boolean flag;
   private Long id;
   private Long categoryId;
   private Date startDate;
   private Date endDate;
+
+  public Boolean getFlag() { return flag; }
+  public void setFlag(Boolean flag) { this.flag = flag; }
 
   public Long getId() { return id; }
   public void setId(Long id) { this.id = id; }
@@ -22,8 +26,12 @@ public class TbCategory {
 
   @Override
   public String toString() {
-    return "TbCategory{" + "id=" + id + ", categoryId=" + categoryId +
+    return "TbCategory{" +
+        "flag=" + flag +
+        ", id=" + id +
+        ", categoryId=" + categoryId +
         ", startDate=" + startDate +
-        ", endDate=" + endDate + '}';
+        ", endDate=" + endDate +
+        '}';
   }
 }

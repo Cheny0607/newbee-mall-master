@@ -64,30 +64,43 @@ public class CategoryController {
     return "admin/category";
   }
 
-  @RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
-  @ResponseBody
-  public Result deleteCampaign(@RequestBody Long categoryId) {
-    if (newBeeMallCategoryService.deleteCampaign(categoryId)) {
-      return ResultGenerator.genSuccessResult();
-    } else {
-      return ResultGenerator.genFailResult("删除失败");
-    }
-  }
-  @RequestMapping(value = "/campaign/save", method = RequestMethod.POST)
+//  @RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
+//  @ResponseBody
+//  public Result deleteCampaign(@RequestBody Long categoryId) {
+//    if (newBeeMallCategoryService.deleteCampaign(categoryId)) {
+//      return ResultGenerator.genSuccessResult();
+//    } else {
+//      return ResultGenerator.genFailResult("删除失败");
+//    }
+//  }
+  @RequestMapping(value = "/check/invent", method = RequestMethod.POST)
   @ResponseBody
   public Result insertCampaign(@RequestBody TbCategory tbCategory) {
+    Boolean delete = newBeeMallCategoryService.deleteCampaign(tbCategory.getCategoryId());
+    TbCategory tbList = new TbCategory();
     Integer count = null;
+    tbList.setId(tbCategory.getId());
+    tbList.setCategoryId(tbCategory.getCategoryId());
+    tbList.setStartDate(tbCategory.getStartDate());
+    tbList.setEndDate(tbCategory.getEndDate());
     Boolean compare = newBeeMallCategoryService.compareCampaign(tbCategory);
-    if (compare) {
-      if (tbCategory != null) {
-        count = newBeeMallCategoryService.insertCampaign(tbCategory);
+    if(!tbCategory.getFlag()){
+      if(delete){
+        return ResultGenerator.genSuccessResult();
       }
-      if (!(count > 0)) {
-        return ResultGenerator.genFailResult("投稿失敗");
+      return ResultGenerator.genFailResult("删除失败");
+    } else {
+      if (compare) {
+        if (tbCategory != null) {
+          count = newBeeMallCategoryService.insertCampaign(tbList);
+        }
+        if (!(count > 0)) {
+          return ResultGenerator.genFailResult("投稿失敗");
+        }
+        return ResultGenerator.genSuccessResult(count);
       }
-      return ResultGenerator.genSuccessResult(count);
+      return ResultGenerator.genFailResult("期間外です");
     }
-    return ResultGenerator.genFailResult("期間外です");
   }
 
   //added by c modal
@@ -131,8 +144,8 @@ public class CategoryController {
       }
     }
     Map<Object,List> result = new HashMap<>();
-    result.put("subCategoryList",subCategoryList);
     result.put("gsList",gsList);
+    result.put("subCategoryList",subCategoryList);
     return ResultGenerator.genSuccessResult(result);
   }
 }

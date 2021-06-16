@@ -1,7 +1,6 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<script src="../../../../../../goodsCategory.js"></script>
 <header th:replace="admin/header::header-fragment"></header>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -49,8 +48,7 @@
                       <span>終了日
                         <input class="endDate" type="date" id="date2" th:value="${#dates.format(firstLevel.endDate,'yyyy-MM-dd')}">
                       </span>
-                        <button class="button1" id="mainCategoryBtn" th:onclick="'javascript:nextLevel(' +this +',' + ${firstLevel.categoryId} + ');'"
-                                th:value="${firstLevel.categoryId}" th:if="${firstLevel.id}">➕</button>
+                        <button class="button1" id="mainCategoryBtn" th:onclick="'javascript:nextLevel(' +this +',' + ${firstLevel.categoryId} + ');'">➕</button>
                     </td>
                   </tr>
                 </th:block>
@@ -60,23 +58,11 @@
             </div>
             <br>
             <div>
-              <button class="btn btn-info" id="modal-open">
-                <i class="fa fa-plus"></i>&nbsp;买二送一
-              </button>
+<!--              <button class="btn btn-info" id="modal-open">-->
+<!--                <i class="fa fa-plus"></i>&nbsp;买二送一-->
+<!--              </button>-->
             </div>
-            <ul id ="categoryResultUl">
-              <li class="dumyLi categoryLi">
-                <input id="check2" type="checkbox"/>
-                <a>
-                </a>
-                <span>開始日</span>
-                <input class="start" type="date" id="date3">
-                <span>終了日</span>
-                <input class="end" type="date" id="date4">
-                <button class="button2" id="subCategoryBtn"
-                        th:attr="onclick=|nextLevel(' +this +',' + categoryId+ ')|">➕</button>
-              </li>
-            </ul>
+
           </div>
         </div><!-- /.card-body -->
       </div>
@@ -124,6 +110,23 @@
           </div>
         </div>
       </div>
+    </div>
+    <div id="nextPopUp">
+    <ul id ="categoryResultUl">
+      <div id="popup">
+      <li class="dumyLi categoryLi">
+        <input id="check2" type="checkbox"/>
+        <a>
+        </a>
+        <span>開始日</span>
+        <input class="start" type="date" id="date3">
+        <span>終了日</span>
+        <input class="end" type="date" id="date4">
+        <button class="button2" >➕</button>
+      </li>
+        <button type="button" id="popUpClose">✖️</button>
+      </div>
+    </ul>
     </div>
     <!-- /.modal -->
     <!-- /.content-wrapper -->
