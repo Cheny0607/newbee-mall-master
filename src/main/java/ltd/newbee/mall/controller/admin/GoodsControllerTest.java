@@ -12,10 +12,15 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.entity.DetailTitle;
 import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.RestaurantDesc;
+import ltd.newbee.mall.entity.TbGenre;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ltd.newbee.mall.entity.GoodsImage;
@@ -29,6 +34,9 @@ import ltd.newbee.mall.service.NewBeeMallGoodsService;
 //class GoodsControllerTest{
 //  @Resource
 //  NewBeeMallGoodsService newBeeMallGoodsService;
+//  NewBeeMallGoodsMapper newBeeMallGoodsMapper;
+//  @Autowired
+//  private NewBeeMallGoodsMapper goodsMapper;
 //  @Test
 //  public void testGoodsImageService(){
 //    long goodsId=10203L;
@@ -212,6 +220,57 @@ import ltd.newbee.mall.service.NewBeeMallGoodsService;
 //    assertEquals("2021/03/31",starDate3);
 //    assertEquals("2021-03-31",starDate1);
 //  }
+
+//  @Test
+//  public void getDetailTitle(){
+//    Long resId = 1L;
+//    DetailTitle detailTitle = goodsMapper.getDetailTitle(resId);
+//    String name = detailTitle.getName();
+//    String star = detailTitle.getStar();
+//    String score = detailTitle.getScore();
+//    String commentNum = detailTitle.getCommentNum();
+//    String saveNum = detailTitle.getSaveNum();
+//    assertEquals("焼肉",name);
+//    assertEquals("4",star);
+//    assertEquals("4.12",score);
+//    assertEquals("132",commentNum);
+//    assertEquals("145",saveNum);
+//  }
+//
+//  @Test
+//  public void getDetailSubTitle(){
+//    Long resId = 1L;
+//    RestaurantDesc subTitle = goodsMapper.getDetailSubTitle(resId);
+//    String nearbyStation = subTitle.getNearbyStation();
+//    String nightBudget = subTitle.getNightBudget();
+//    String dayBudget = subTitle.getDayBudget();
+//    String restDay = subTitle.getRestDay();
+//    String genreName = subTitle.getGenreName();
+//    assertEquals("東京駅",nearbyStation);
+//    assertEquals("3000~4000",nightBudget);
+//    assertEquals("990~",dayBudget);
+//    assertEquals("無",restDay);
+//    assertEquals("居酒屋",genreName);
+//  }
+//
+//  @Test
+//  public void getGenreList(){
+//    Long genreId = 1L;
+//    List<TbGenre> genreList = goodsMapper.getGenreList(genreId);
+//    TbGenre gL = genreList.get(0);
+//    String name = gL.getName1();
+//    assertEquals("焼肉",name);
+//  }
+//
+//  @Test
+//  public void getGenreCategoryList(){
+//    Long categoryId = 1L;
+//    List<TabeLogCategory> categoryList = goodsMapper.getGenreCategoryList(categoryId);
+//    TabeLogCategory cL = categoryList.get(0);
+//    String name = cL.getCategoryName();
+//    assertEquals("東京駅・焼肉",name);
+//  }
+//
 //}
 
 

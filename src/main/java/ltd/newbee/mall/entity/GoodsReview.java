@@ -1,5 +1,7 @@
 package ltd.newbee.mall.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class GoodsReview {
@@ -7,6 +9,7 @@ public class GoodsReview {
   private String id;
   private Integer star;
   private String customerId;
+  @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+9")
   private String commentDate;
   private Long goodsId;
   private String title;
@@ -15,6 +18,7 @@ public class GoodsReview {
   private String nickName;
   private String goodsName;
   private Long reviewNum;
+  private Integer[] ids;
 
   public Long getReviewNum() { return reviewNum; }
 
@@ -105,13 +109,30 @@ public class GoodsReview {
 
   public void setGoodsName(String goodsName) { this.goodsName = goodsName; }
 
+  public Integer[] getIds() {
+    return ids;
+  }
+
+  public void setIds(Integer[] ids) {
+    this.ids = ids;
+  }
 
   @Override
   public String toString() {
-    return "GoodsReview{" + "id='" + id + '\'' + ", star=" + star + ", customerId='" + customerId + '\'' +
-        ", commentDate='" + commentDate + '\'' + ", goodsId=" + goodsId + ", title='" + title + '\'' +
-        ", content='" + content + '\'' + ", picture='" + picture + '\'' + ", nickName='" + nickName + '\'' +
-        ", goodsName='" + goodsName + '\'' + ", reviewNum=" + reviewNum + '}';
+    return "GoodsReview{" +
+        "id='" + id + '\'' +
+        ", star=" + star +
+        ", customerId='" + customerId + '\'' +
+        ", commentDate='" + commentDate + '\'' +
+        ", goodsId=" + goodsId +
+        ", title='" + title + '\'' +
+        ", content='" + content + '\'' +
+        ", picture='" + picture + '\'' +
+        ", nickName='" + nickName + '\'' +
+        ", goodsName='" + goodsName + '\'' +
+        ", reviewNum=" + reviewNum +
+        ", ids=" + Arrays.toString(ids) +
+        '}';
   }
 }
 

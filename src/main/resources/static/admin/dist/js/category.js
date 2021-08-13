@@ -25,33 +25,49 @@ function nextLevel(thi,categoryId){
 };
 
 function showResult(thi,result){
-  //joinList
-  var subCategoryList = result.data.subCategoryList;
+  //joinList or goodsList
+  var list = result.data.list;
   //goodsSale
   var gsList = result.data.gsList;
   var cloneUl = $("#nextPopUp").find("#categoryResultUl").clone().removeClass("categoryResultUl");
-  for(var c = 0;c < subCategoryList.length;c++){
+  for(var c = 0;c < list.length;c++){
     var el = cloneUl.find(".dumyLi").clone().removeClass("dumyLi");
-    var se = $('<select/>');
+    var se = $('<select/>',{class:"custom-select"}).css({"width": "20%",});
     var option = "";
+    var temp = "";
     for(var i = 0; i< gsList.length; i++){
       option += '<option value=\"'+gsList[i].id+'\">' + gsList[i].name + '</option>'
-      if(gsList[i].id == subCategoryList[c].id && gsList[i].id != null){
-        se.val(gsList[i].id);
+      if(gsList[i].id == list[c].id && gsList[i].id != null){
+        temp = gsList[i].id;
         //checkBox
-        el.find("#check2").prop('checked',true);
+        el.find(".check1").prop('checked',true);
+      }
+      se.html(option);
+      if (temp != "") {
+        se.val(temp);
       }
     }
-    se.html(option);
     el.find("input:first-child").before(se);
     var link = el.find("a");
-    link.text(subCategoryList[c].categoryName);
-    var sd = el.find("input:nth-child(5)");
-    var ed = el.find("input:nth-child(7)");
-    sd.val(subCategoryList[c].startDate);
-    ed.val(subCategoryList[c].endDate);
+    link.text(list[c].categoryName);
+    link.text(list[c].goodsName);
+    var sd = el.find("#date3");
+    var ed = el.find("#date4");
+    var categoryId = el.find("#categoryId");
+    var goodsId = el.find("#goodsId");
+    var goodsCategoryId = el.find("#goodsCategoryId");
+    sd.val(list[c].startDate);
+    ed.val(list[c].endDate);
+    categoryId.val(list[c].categoryId);
+    goodsId.val(list[c].goodsId);
+    goodsCategoryId.val(list[c].goodsCategoryId);
     //second popup
-    el.find(".button2").attr('onclick','nextLevel(this,'+subCategoryList[c].categoryId+')');
+    el.find(".button2").attr('onclick','nextLevel(this,'+list[c].categoryId+')');
+    // if(list[c].goodsCategoryId != null) {
+    //   el.find(".button2").attr('onclick',
+    //       'nextLevel(this,' + list[c].goodsCategoryId + ')');
+    // }
+    el.find(".check1").attr('onchange','checkBox(this)');
     debugger;
     cloneUl.find(".dumyLi").before(el);
     //close
@@ -66,144 +82,130 @@ function showResult(thi,result){
   $("#main").append(cloneUl);
 }
 
-//checkBox
-$(".check1").change(function() {
+//check
+function checkBox(thi){
   debugger;
-  var flag = $(this).is(':checked');
-  var id = $(this).parent().parent().find('.custom-select').val();
-  var startDate = $(this).parent().find('.startDate').val();
-  var endDate = $(this).parent().find('.endDate').val();
-  var categoryId = $(this).val();
-  var data = {
-    "id": id,
-    "categoryId": categoryId,
-    "startDate": startDate,
-    "endDate": endDate,
-    "flag":flag,
-  };
-  $.ajax({
-    type: 'POST',//方法类型
-    url: "/admin/check/invent",
-    contentType: 'application/json',
-    data: JSON.stringify(data),
-    success: function (result) {
-      if (result.resultCode == 200) {
-        if(flag) {
-          swal(
-              "ご登録ありがとうございます！", {
-                icon: "success",
-              });
-        }else {
-          swal(
-              "刪除成功！", {
-                icon: "success",
-              });
+  var flag = $(thi).is(':checked');
+  var id = $(thi).parent().find(".custom-select").val();
+  var goodsId = $(thi).parent().find("#goodsId").val();
+  var startDate = $(thi).parent().find(".startDate").val();
+  var endDate = $(thi).parent().find(".endDate").val();
+  $("#campaignSetModal").find("#primaryGoodsIdValue").val(goodsId);
+  $("#campaignSetModal").find("#startDate").val(startDate);
+  $("#campaignSetModal").find("#endDate").val(endDate);
+  if (id == 1){
+    var goodsName = $(thi).parent().find('.categoryName').text();
+    var goodsCategoryId = $(thi).parent().find("#goodsCategoryId").val();
+    $("#campaignSetModal").find("#primaryGoodsId").val(goodsName);
+    $("#campaignSetModal").find("#csCategoryId").val(goodsCategoryId);
+    var data = {
+      "goodsId": goodsId,
+      "flag": flag,
+      "goodsCategoryId": goodsCategoryId,
+    };
+    $.ajax({
+      type: 'POST',//方法类型
+      url: '/admin/giftGoods',
+      contentType: 'application/json',
+      data:JSON.stringify(data),
+      success: function (result) {
+        if (result.resultCode == 200) {
+          debugger;
+          if (!flag) {
+            swal("ご削除出来ました！", {
+              icon: "success",
+            });
+          } else {
+            var goodsList = result.data;
+            for(var i = 0; i< goodsList.length; i++) {
+              $("#subGoodsId").append(
+                  '<option value=\"' + goodsList[i].goodsId + '\">'
+                  + goodsList[i].goodsName + '</option>');
+            }
+          }
+        } else {
+          swal(result.message, {
+            icon: "error",
+          });
         }
-      } else {
-        swal(result.message, {
+      },
+      error: function () {
+        swal("操作失败", {
           icon: "error",
         });
-      };
-    },
-    error: function () {
-      swal("期間外です!", {
-        icon: "error",
-      });
+      }
+    })
+    if (goodsId&&flag&&id==1){
+      $("#campaignSetModal").modal('show');
     }
-  });
-})
-
-// $(".check1").change(function() {
-//   debugger;
-//   var ischecked = $(this).is(':checked');
-//   if (!ischecked) {
-//     var categoryId = $(this).val();
-//   var url = "/admin/campaign/delete";
-//   var swlMessage = '刪除成功';
-//   $.ajax({
-//     type: 'POST',//方法类型
-//     url: url,
-//     contentType: 'application/json',
-//     data: JSON.stringify(categoryId),
-//     success: function (result) {
-//       if (result.resultCode == 200) {
-//         swal({
-//           title: swlMessage,
-//           type: 'success',
-//           showCancelButton: false,
-//           confirmButtonColor: '#1baeae',
-//           confirmButtonText: '確定',
-//           confirmButtonClass: 'btn btn-success',
-//           buttonsStyling: false
-//         })
-//       } else {
-//         swal(result.message, {
-//           icon: "error",
-//         });
-//       };
-//     },
-//     error: function () {
-//       swal("操作失败", {
-//         icon: "error",
-//       });
-//     }
-//   });
-//   } else {
-//     debugger;
-//     var id = $(this).parent().parent().find('.custom-select').val();
-//     var startDate = $(this).parent().find('.startDate').val();
-//     var endDate = $(this).parent().find('.endDate').val();
-//     var categoryId = $(this).val();
-//     var data = {
-//       "id": id,
-//       "categoryId": categoryId,
-//       "startDate": startDate,
-//       "endDate": endDate,
-//     }
-//     var url = "/admin/campaign/save";
-//     $.ajax({
-//       type: 'POST',//方法类型
-//       url: url,
-//       contentType: 'application/json',
-//       data: JSON.stringify(data),
-//       success: function (result) {
-//         if (result.resultCode == 200) {
-//           swal(
-//             "ご登録ありがとうございます！",{
-//               icon:"success",
-//           });
-//         } else {
-//           swal(result.message, {
-//             icon: "error",
-//           });
-//         };
-//       },
-//       error: function () {
-//         swal("期間外です!", {
-//           icon: "error",
-//         });
-//       }
-//     });
-//   }
-// });
+    return;
+  }else {
+    var flag = $(thi).is(':checked');
+    var id = $(thi).parent().parent().find('.custom-select').val();
+    var startDate = $(thi).parent().find('.startDate').val();
+    var endDate = $(thi).parent().find('.endDate').val();
+    var categoryId = $(thi).parent().find("#categoryId").val();
+    var data = {
+      "id": id,
+      "categoryId": categoryId,
+      "startDate": startDate,
+      "endDate": endDate,
+      "flag": flag,
+    };
+    $.ajax({
+      type: 'POST',//方法类型
+      url: "/admin/check/event",
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function (result) {
+        if (result.resultCode == 200) {
+          if (flag) {
+            swal(
+                "ご登録ありがとうございます！", {
+                  icon: "success",
+                });
+          } else {
+            swal(
+                "刪除成功！", {
+                  icon: "success",
+                });
+          }
+        } else {
+          swal(result.message, {
+            icon: "error",
+          });
+        }
+        ;
+      },
+      error: function () {
+        swal("期間外です!", {
+          icon: "error",
+        });
+      }
+    });
+  }
+}
 
 //modal
-$(function () {
-  $("#modal-open").click(function () {
-    $(".modal").fadeIn();
-  });
-  $("#modal-close").click(function () {
-    $(".modal").fadeOut();
-  });
-});
+// $("#modal-close").click(function () {
+//   $(".modal").fadeOut();
+// });
 
 $("#saveSaleButton").click(function () {
   debugger;
-  var primaryGoodsId = $("#primaryGoodsId").val();
+  var primaryGoodsId = $("#primaryGoodsIdValue").val();
   var subGoodsId = $("#subGoodsId").val();
+  var startDate = $("#startDate").val();
+  var endDate = $("#endDate").val();
+  var campaignId = 1;
+  var categoryId = $("#csCategoryId").val();
   data = {
     "primaryGoodsId": primaryGoodsId,
     "subGoodsId": subGoodsId,
+    "startDate":startDate,
+    "endDate":endDate,
+    "campaignId":campaignId,
+    "categoryId":categoryId
   };
   $.ajax({
     type: 'POST',//方法类型

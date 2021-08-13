@@ -20,6 +20,7 @@ import ltd.newbee.mall.entity.CampaignSet;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsSale;
 import ltd.newbee.mall.entity.MainCategory;
+import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.TbCategory;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.util.BeanUtil;

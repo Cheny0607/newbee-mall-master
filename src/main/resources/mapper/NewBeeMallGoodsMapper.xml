@@ -504,8 +504,8 @@
   </select>
   <!--added by c 2021/5/4 helpedNum-->
   <insert id="insertHelpedNum" parameterType="ltd.newbee.mall.entity.GoodsReviewHelpedNum">
-    insert into helped_num(user_id, review_id)
-    values (#{userId,jdbcType=BIGINT}, #{reviewId,jdbcType=INTEGER})
+    insert into helped_num(review_id, user_id)
+    values (#{reviewId, jdbcType=INTEGER},#{userId, jdbcType=BIGINT})
   </insert>
   <update id="updateReviewNum">
     update goods_review set review_num = review_num + 1
@@ -515,16 +515,6 @@
     select review_num
     from goods_review where id = #{reviewId,jdbcType=BIGINT}
   </select>
-  <!--pagingReview-->
-  <!--<select id="pagingReviewLi" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsReview">
-    select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,r.review_num,u.user_id,u.nick_name,u.login_name,g.goods_name
-    from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
-    limit #{start},#{limit}
-  </select>
-  <select id="getTotalGoodsReview" parameterType="Map" resultType="int">
-    select count(*) from goods_review;
-  </select>-->
-
   <!--added by c 2021/5/10 insert search history-->
   <insert id="insertSearchHistory" parameterType="ltd.newbee.mall.entity.SearchHistory">
     insert into search_history
@@ -578,6 +568,9 @@
       <if test="id !=null">
         id,
       </if>
+      <if test="goodsId !=null">
+        goods_id,
+      </if>
       <if test="startDate !=null">
         start_date,
       </if>
@@ -588,6 +581,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
       </if>
       <if test="startDate != null">
         #{startDate,jdbcType=TIMESTAMP},
@@ -768,10 +764,106 @@
     from tb_newbee_mall_goods_info
     where goods_category_id = #{goodsCategoryId,jdbcType=BIGINT}
   </select>
-  <select id="findListByGoodsId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from tb_newbee_mall_goods_info
-    where goods_id = #{goodsId,jdbcType=BIGINT}
+  <!--added by c 2021/7/13-->
+  <select id="getLimitGoodsReview" parameterType="Map" resultType="ltd.newbee.mall.entity.GoodsReview">
+    select r.id,r.star,r.customer_id,r.comment_date,r.goods_id,r.title,r.content,r.picture,r.review_num,u.user_id,u.nick_name,u.login_name,g.goods_name
+    from goods_review as r join tb_newbee_mall_user as u on r.customer_id=u.user_id join tb_newbee_mall_goods_info as g on r.goods_id=g.goods_id
+    where r.goods_id = #{goodsId,jdbcType=BIGINT}
+    limit #{start},#{limit}
+  </select>
+  <select id="getTotalGoodsReview" parameterType="Map" resultType="int">
+    select count(*) from goods_review;
+  </select>
+
+  <!--added by c 2021/7/20 tabe-log-->
+  <select id="getDetailTitle" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.DetailTitle">
+    select id,name,star,save_num,comment_num,style from detail_title
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getDetailSubTitle" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.RestaurantDesc">
+    select id,nearby_station,night_budget,day_budget,rest_day from restaurant_desc
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--added by c 2021/7/26 get tb_comment-->
+  <select id="getTbComment" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TbComment">
+    select id,commentId,topic,comment,image,visitDate,star,sum,visitTime from tb_comment
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--added by c 2021/7/26 get total_comment-->
+  <select id="getTotalRestComment" parameterType="Map" resultType="int">
+    select count(*) from tb_comment
+  </select>
+  <!--added by c 2021/7/26 get avg star-->
+  <select id="getAvgStar" parameterType="Map" resultType="double">
+    select AVG(star) from tb_comment
+  </select>
+  <!--added by c 2021/7/28 get join category-->
+  <select id="getJoinCategoryList" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TabeLogJoinCategory">
+    select r.id,r.station_collection_id,r.genre_collection_id,u.station_collection_id,u.station_id,u.station_name,g.genre_collection_id,g.genre_id,g.name
+    from tabe_log_category as r join tabe_log_station as u on r.station_collection_id=u.station_collection_id join tb_genre as g on r.genre_collection_id=g.genre_collection_id
+    where r.id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--added by c 2021/7/29 top page-->
+  <select id="getTopPage" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TopPage">
+    select id,notice1,notice2,notice3,notice4,notice5,notice6,top_appeal,top_content from top_page
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopImage" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TopImage">
+    select id,path from top_image
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopKodawari" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TopKodawari">
+    select id,image,title,content,kodawari_label from top_kodawari
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getRestHygiene" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.RestHygiene">
+    select id,hygiene_item_name1,hygiene_item_name2,hygiene_data1,hygiene_data2,hygiene_data3 from rest_hygiene
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopCourse" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TopCourse">
+    select id,course_title,course_desc,image,price_num,price_tax,menu_num,people_num,time_limit,drink,menu_content from top_course
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopCoupon" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TopCoupon">
+    select id,rest_name,coupon_num,coupon_title,use_condition,show_condition,note,time_limit_date,time_limit_day from top_coupon
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopCommentImage" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TopCommentImage">
+    select id,comment_id,topic,image,visit_date,star,sum,visit_time,helped_num,comment,user,user_log,
+    user_rest,user_follow,user_follower,user_count from top_comment_image
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--comment good num-->
+  <insert id="insertTabelogHelpedNum" parameterType="ltd.newbee.mall.entity.TabelogGoodNum">
+    insert into tabelog_good_num(comment_id, user_id)
+    values (#{commentId, jdbcType=INTEGER},#{userId, jdbcType=BIGINT})
+  </insert>
+  <update id="updateCommentNum">
+    update top_comment_image set review_num = review_num + 1
+    where id = #{commentId}
+  </update>
+  <select id="getCommentNum" parameterType="int" resultType="java.lang.Long">
+    select review_num
+    from top_comment_image where id = #{commentId,jdbcType=BIGINT}
+  </select>
+  <select id="getTopBasicInfo" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.TabelogBasicInformation">
+    select id,name,genre,phone_number,reservation,address,access,work_time,official_budget,aggregate_budget,pay_way
+           from tabelog_basic_information
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopSeatInfo" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.SeatFacility">
+    select id,seats_number,private_room,reserved,smoking,parking_lot,space_equipment,mobile_phone
+    from seat_facility
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getMenuCourse" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.MenuCourse">
+    select id,course,drink,meal
+    from menu_course
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getTopRelatedInfo" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.FeaturesRelatedInformation">
+    select id,use_scene,with_children,homepage,official_account,phone_num,remarks,related_store_info,first_contributor
+    from features_related_information
+    where id = #{id,jdbcType=BIGINT}
   </select>
 </mapper>

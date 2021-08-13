@@ -70,9 +70,15 @@
 #date4{
   width: 25%;
 }
-#modal-open{
-  width: 16.66%;
-}
+/*#modal-open{*/
+/*  width: 16.66%;*/
+/*}*/
 .card{
   overflow-x: auto;
 }
+.mainCategory-table{
+  width: 50%;
+}
+/*.modal{*/
+/*  width: 50%;*/
+/*}*/

@@ -10,6 +10,8 @@ package ltd.newbee.mall.dao;
 
 import java.util.Map;
 import ltd.newbee.mall.controller.vo.GoodsReviewVO;
+import ltd.newbee.mall.entity.DetailTitle;
+import ltd.newbee.mall.entity.FeaturesRelatedInformation;
 import ltd.newbee.mall.entity.GoodsCoupon;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
@@ -17,11 +19,26 @@ import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.MenuCourse;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.RestHygiene;
+import ltd.newbee.mall.entity.RestaurantDesc;
 import ltd.newbee.mall.entity.SearchHistory;
+import ltd.newbee.mall.entity.SeatFacility;
 import ltd.newbee.mall.entity.StockNumDTO;
+import ltd.newbee.mall.entity.TabeLogJoinCategory;
+import ltd.newbee.mall.entity.TabelogBasicInformation;
+import ltd.newbee.mall.entity.TabelogGoodNum;
 import ltd.newbee.mall.entity.TbCategory;
+import ltd.newbee.mall.entity.TbComment;
+import ltd.newbee.mall.entity.TbGenre;
 import ltd.newbee.mall.entity.TbSale;
+import ltd.newbee.mall.entity.TopCommentImage;
+import ltd.newbee.mall.entity.TopCoupon;
+import ltd.newbee.mall.entity.TopCourse;
+import ltd.newbee.mall.entity.TopImage;
+import ltd.newbee.mall.entity.TopKodawari;
+import ltd.newbee.mall.entity.TopPage;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 import org.apache.ibatis.annotations.Param;
@@ -90,7 +107,7 @@ public interface NewBeeMallGoodsMapper {
     List<GoodsSale> getGoodsSale(Integer[] ids);
     List<TbCategory> getTbCategory(Long id);
     List<GoodsCoupon> getGoodsCoupon(Long couponId);
-    int insertTbSale(TbSale id);
+    int insertTbSale(TbSale tbSale);
     int insertGoodsSale(GoodsSale goodsSale);
     int insertTbCategory(TbCategory id);
     int insertGoodsCoupon(GoodsCoupon couponId);
@@ -100,7 +117,40 @@ public interface NewBeeMallGoodsMapper {
     //added by c 2021/5/15 max saleId
     Long findMaxSaleId();
     //modal dropDownList
-    List<NewBeeMallGoods> findCategoryId(Long categoryId);
-    List<NewBeeMallGoods> findListByGoodsId(Long goodsId);
+    List<NewBeeMallGoods> findCategoryId(Long goodsCategoryId);
+    //added by c 2021/7/13
+    List<GoodsReview> getLimitGoodsReview(PageQueryUtil pageUtil);
+    int getTotalGoodsReview(PageQueryUtil pageUtil);
+
+    //added by c 2021/7/20 tabe-log
+    DetailTitle getDetailTitle(Long id);
+    RestaurantDesc getDetailSubTitle(Long id);
+    //List<TbGenre> getGenreList(Long id);
+    //List<TabeLogCategory> getGenreCategoryList(Long genreId);
+    //added by c 2021/7/26 get tb_comment
+    // List<TbComment> getTbComment(Long id);
+    //added by c 2021/7/26 get total_comment
+    //List<TbComment> getTbComment(PageQueryUtil pageUtil);
+    int getTotalRestComment ();
+    double getAvgStar ();
+    //added by c 2021/7/28 get join category
+    List<TabeLogJoinCategory> getJoinCategoryList(Long id);
+    //added by c 2021/7/29 top page
+    List<TopPage> getTopPage(Long id);
+    List<TopImage> getTopImage(Long id);
+    List<TopKodawari> getTopKodawari(Long id);
+    List<RestHygiene> getRestHygiene(Long id);
+    List<TopCourse> getTopCourse(Long id);
+    List<TopCoupon> getTopCoupon(Long id);
+    List<TopCommentImage> getTopCommentImage(Long id);
+    //comment good num
+    boolean insertTabelogHelpedNum(TabelogGoodNum tabelogGoodNum);
+    boolean updateCommentNum(TabelogGoodNum tabelogGoodNum);
+    long getCommentNum(int commentId);
+    //
+    List<TabelogBasicInformation> getTopBasicInfo(Long id);
+    List<SeatFacility> getTopSeatInfo(Long id);
+    List<MenuCourse> getMenuCourse(Long id);
+    List<FeaturesRelatedInformation> getTopRelatedInfo(Long id);
 
 }

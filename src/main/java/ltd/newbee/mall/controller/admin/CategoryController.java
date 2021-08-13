@@ -64,16 +64,7 @@ public class CategoryController {
     return "admin/category";
   }
 
-//  @RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
-//  @ResponseBody
-//  public Result deleteCampaign(@RequestBody Long categoryId) {
-//    if (newBeeMallCategoryService.deleteCampaign(categoryId)) {
-//      return ResultGenerator.genSuccessResult();
-//    } else {
-//      return ResultGenerator.genFailResult("删除失败");
-//    }
-//  }
-  @RequestMapping(value = "/check/invent", method = RequestMethod.POST)
+  @RequestMapping(value = "/check/event", method = RequestMethod.POST)
   @ResponseBody
   public Result insertCampaign(@RequestBody TbCategory tbCategory) {
     Boolean delete = newBeeMallCategoryService.deleteCampaign(tbCategory.getCategoryId());
@@ -103,49 +94,74 @@ public class CategoryController {
     }
   }
 
-  //added by c modal
+//  //popUp
+//  @RequestMapping(value = "/popUp/page",method = RequestMethod.POST)
+//  @ResponseBody
+//  public Result selectParentId(@RequestBody Long categoryId){
+////    Boolean flag;
+//    Long parentId = categoryId;
+//    Long goodsCategoryId = categoryId;
+//    List<GoodsSale> gsList = newBeeMallCategoryService.getGoodsSale();
+//    List<MainCategory> subCategoryList = newBeeMallCategoryService.selectParentId(parentId);
+//    List<NewBeeMallGoods> goodsList = newBeeMallGoodsService.findGiftCategoryId(goodsCategoryId);
+//    Map<Object,List> result = new HashMap<>();
+//    result.put("gsList",gsList);
+//    result.put("subCategoryList",subCategoryList);
+//    result.put("goodsList",goodsList);
+//    result.put("gsList",gsList);
+////    result.put("list",goodsList);
+//    return ResultGenerator.genSuccessResult(result);
+//  }
+  //popUp
+  @RequestMapping(value = "/popUp/page",method = RequestMethod.POST)
+  @ResponseBody
+  public Result selectParentId(@RequestBody Long categoryId){
+    Map<Object,List> result = new HashMap<>();
+    Long goodsCategoryId = categoryId;
+    Long parentId = categoryId;
+    List<GoodsSale> gsList = newBeeMallCategoryService.getGoodsSale();
+    List<MainCategory> subCategoryList = newBeeMallCategoryService.selectParentId(parentId);
+    List<NewBeeMallGoods> goodsList = newBeeMallGoodsService.findGiftCategoryId(goodsCategoryId);
+    if (!goodsList.isEmpty()) {
+      result.put("list",goodsList);
+      result.put("gsList",gsList);
+    }else {
+      result.put("gsList",gsList);
+      result.put("list",subCategoryList);
+    }
+    return ResultGenerator.genSuccessResult(result);
+  }
+
+  //modal dropDownList
+  @RequestMapping(value = "/giftGoods",method = RequestMethod.POST)
+  @ResponseBody
+  public Result findGiftCategoryId(@RequestBody Long goodsCategoryId){
+    List<NewBeeMallGoods> goodsList = newBeeMallGoodsService.findGiftCategoryId(goodsCategoryId);
+    return ResultGenerator.genSuccessResult(goodsList);
+  }
+
+  //modal insert
   @RequestMapping(value = "/campaignSet/insert",method = RequestMethod.POST)
   @ResponseBody
   public Result insertCampaignSet(@RequestBody CampaignSet campaignSet){
     Integer count = null;
-    CampaignSet csList = new CampaignSet();
+    Integer countTbSale = null;
     Long id = newBeeMallCategoryService.getMaxId();
-    csList.setId(id);
-    csList.setPrimaryGoodsId(campaignSet.getPrimaryGoodsId());
-    csList.setSubGoodsId(campaignSet.getSubGoodsId());
-    if(csList !=null){
-      count = newBeeMallCategoryService.insertCampaignSet(csList);
+    campaignSet.setId(id);
+    TbSale tbList = new TbSale();
+    tbList.setId(campaignSet.getCampaignId());
+    tbList.setGoodsId(campaignSet.getPrimaryGoodsId());
+    tbList.setStartDate(campaignSet.getStartDate());
+    tbList.setEndDate(campaignSet.getEndDate());
+    if(tbList !=null){
+      countTbSale = newBeeMallGoodsService.insertTbSale(tbList);
+    }
+    if(campaignSet !=null){
+      count = newBeeMallCategoryService.insertCampaignSet(campaignSet);
     }
     if(!(count > 0)){
       return ResultGenerator.genFailResult("投稿失敗");
     }
     return ResultGenerator.genSuccessResult(count);
-  }
-  //modal dropDownList
-  @RequestMapping(value = "/giftGoods",method = RequestMethod.POST)
-  @ResponseBody
-  public Result findListByGoodsId(@RequestBody Long goodsId){
-    List<NewBeeMallGoods> goodsList = newBeeMallGoodsService.findListByGoodsId(goodsId);
-    return ResultGenerator.genSuccessResult(goodsList);
-  }
-
-  //popUp
-  @RequestMapping(value = "/popUp/page",method = RequestMethod.POST)
-  @ResponseBody
-  public Result selectParentId(@RequestBody Long categoryId){
-    MainCategory list = new MainCategory();
-    list.setParentId(categoryId);
-    List<GoodsSale> gsList = new ArrayList<GoodsSale>();
-    List<MainCategory> subCategoryList = newBeeMallCategoryService.selectParentId(list.getParentId());
-    for (int i=0; i<subCategoryList.size();i++){
-      if(subCategoryList.get(i).getId()!=null){
-        List<GoodsSale> c = newBeeMallCategoryService.selectGoodsSale(subCategoryList.get(i).getId());
-        gsList.addAll(c);
-      }
-    }
-    Map<Object,List> result = new HashMap<>();
-    result.put("gsList",gsList);
-    result.put("subCategoryList",subCategoryList);
-    return ResultGenerator.genSuccessResult(result);
   }
 }

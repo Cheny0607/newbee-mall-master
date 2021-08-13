@@ -24,7 +24,7 @@
           </div> <!-- /.card-body -->
           <div class="card-body">
             <div>
-              <table class="mainCategory-table"><!--border="1"-->
+              <table class="mainCategory-table">
                 <tbody>
                 <th:block th:unless="${#lists.isEmpty(joinList)}">
                 <th:block th:each="firstLevel:${joinList}">
@@ -39,9 +39,9 @@
                       </select>
                     </td>
                     <td>
-                        <input class="check1" type="checkbox"
-                               th:value="${firstLevel.categoryId}"
+                      <input class="check1" type="checkbox" th:onchange="'javascript:checkBox(' +this +');'"
                                th:checked="${firstLevel.id}!=null ? true:false" th:text="${firstLevel.categoryName}"/>
+                      <input type="hidden" class="hiddenValue" th:value="${firstLevel.categoryId}">
                       <span>開始日
                         <input class="startDate" type="date" id="date1" th:value="${#dates.format(firstLevel.startDate,'yyyy-MM-dd')}">
                       </span>
@@ -58,11 +58,7 @@
             </div>
             <br>
             <div>
-<!--              <button class="btn btn-info" id="modal-open">-->
-<!--                <i class="fa fa-plus"></i>&nbsp;买二送一-->
-<!--              </button>-->
             </div>
-
           </div>
         </div><!-- /.card-body -->
       </div>
@@ -88,19 +84,18 @@
               </div>
               <input type="hidden" id="saleId">
               <div class="form-group">
-                <label for="primaryGoodsId" class="control-label">primaryGoodsId:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label for="primaryGoodsId" class="control-label">当前商品:&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input type="text" class="form-control" id="primaryGoodsId" name="primaryGoodsId"
                        placeholder="请输入" required="true">
+                <input type="hidden" id="primaryGoodsIdValue">
+                <input type="hidden" id="csCategoryId">
+                <input type="hidden" id="startDate">
+                <input type="hidden" id="endDate">
               </div>
               <div class="form-group">
-                <label for="subGoodsId" class="control-label">subGoodsId:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <select class="custom-select" id="subGoodsId">
-                  <option value="selected">选择...</option>
-                  <option value="1">耳机</option>
-                  <option value="2">充电线</option>
+                <label for="subGoodsId" class="control-label">赠送商品:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <select class="modal-select" id="subGoodsId">
                 </select>
-                <!--<input type="text" class="form-control" id="subGoodsId" name="subGoodsId"
-                       placeholder="请输入" required="true">-->
               </div>
             </form>
           </div>
@@ -115,14 +110,17 @@
     <ul id ="categoryResultUl">
       <div id="popup">
       <li class="dumyLi categoryLi">
-        <input id="check2" type="checkbox"/>
-        <a>
+        <input class="check1" type="checkbox"/>
+        <input type="hidden" id="categoryId">
+        <input type="hidden" id="goodsCategoryId">
+        <input type="hidden" id="goodsId">
+        <a class="categoryName">
         </a>
         <span>開始日</span>
-        <input class="start" type="date" id="date3">
+        <input class="startDate" type="date" id="date3">
         <span>終了日</span>
-        <input class="end" type="date" id="date4">
-        <button class="button2" >➕</button>
+        <input class="endDate" type="date" id="date4">
+        <button class="button2">➕</button>
       </li>
         <button type="button" id="popUpClose">✖️</button>
       </div>

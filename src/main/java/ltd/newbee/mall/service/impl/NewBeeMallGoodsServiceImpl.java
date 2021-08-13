@@ -13,6 +13,8 @@ import ltd.newbee.mall.controller.vo.GoodsReviewVO;
 import ltd.newbee.mall.controller.vo.GoodsSaleVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallSearchGoodsVO;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.entity.DetailTitle;
+import ltd.newbee.mall.entity.FeaturesRelatedInformation;
 import ltd.newbee.mall.entity.GoodsCoupon;
 import ltd.newbee.mall.entity.GoodsDesc;
 import ltd.newbee.mall.entity.GoodsImage;
@@ -20,10 +22,25 @@ import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.GoodsReviewHelpedNum;
 import ltd.newbee.mall.entity.GoodsSale;
+import ltd.newbee.mall.entity.MenuCourse;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
+import ltd.newbee.mall.entity.RestHygiene;
+import ltd.newbee.mall.entity.RestaurantDesc;
 import ltd.newbee.mall.entity.SearchHistory;
+import ltd.newbee.mall.entity.SeatFacility;
+import ltd.newbee.mall.entity.TabeLogJoinCategory;
+import ltd.newbee.mall.entity.TabelogBasicInformation;
+import ltd.newbee.mall.entity.TabelogGoodNum;
 import ltd.newbee.mall.entity.TbCategory;
+import ltd.newbee.mall.entity.TbComment;
+import ltd.newbee.mall.entity.TbGenre;
 import ltd.newbee.mall.entity.TbSale;
+import ltd.newbee.mall.entity.TopCommentImage;
+import ltd.newbee.mall.entity.TopCoupon;
+import ltd.newbee.mall.entity.TopCourse;
+import ltd.newbee.mall.entity.TopImage;
+import ltd.newbee.mall.entity.TopKodawari;
+import ltd.newbee.mall.entity.TopPage;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -35,7 +52,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import sun.jvm.hotspot.debugger.Page;
 
 @Service
 public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
@@ -150,6 +166,12 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         PageResult pageResult = new PageResult(qaSortList,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
     }
+
+//    @Override
+//    public int getTotalQa(PageQueryUtil pageUtil){
+//        int total = goodsMapper.getTotalGoodsQa(pageUtil);
+//        return total;
+//    }
     //added by c 2021/4/24 insert
     @Override
     public int insertQaSelective(GoodsQa question) {
@@ -275,9 +297,150 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 
     //modal dropDownList
     @Override
-    public List<NewBeeMallGoods> findListByGoodsId(Long goodsId){
-        List<NewBeeMallGoods> goods = goodsMapper.findListByGoodsId(goodsId);
-        List<NewBeeMallGoods> goodsList = goodsMapper.findCategoryId(goods.get(0).getGoodsCategoryId());
+    public List<NewBeeMallGoods> findGiftCategoryId(Long goodsCategoryId){
+        List<NewBeeMallGoods> goodsList = goodsMapper.findCategoryId(goodsCategoryId);
         return goodsList;
+    }
+
+    //modal insert
+    @Override
+    public int insertTbSale(TbSale tbSale) {
+        int countTbSale = goodsMapper.insertTbSale(tbSale);
+        return countTbSale;
+    }
+
+    //added by c 2021/7/13
+    @Override
+    public PageResult getLimitGoodsReview(PageQueryUtil pageUtil){
+        List<GoodsReview> reviewList = goodsMapper.getLimitGoodsReview(pageUtil);
+        int total = goodsMapper.getTotalGoodsReview(pageUtil);
+        PageResult pageResult = new PageResult(reviewList,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
+    }
+
+
+    //added by c 2021/7/20 tabe-log
+    @Override
+    public DetailTitle getDetailTitle(Long id){
+        DetailTitle detailTitle = goodsMapper.getDetailTitle(id);
+        return detailTitle;
+    }
+    @Override
+    public RestaurantDesc getDetailSubTitle(Long id){
+        RestaurantDesc restaurantDesc = goodsMapper.getDetailSubTitle(id);
+        return restaurantDesc;
+    }
+//    @Override
+//    public List<TbGenre> getGenreList(Long id){
+//        List<TbGenre> genreList = goodsMapper.getGenreList(id);
+//        return genreList;
+//    }
+//    @Override
+//    public List<TabeLogCategory> getGenreCategoryList(Long genreId){
+//        List<TabeLogCategory> tabeLogCategoryList = goodsMapper.getGenreCategoryList(genreId);
+//        return tabeLogCategoryList;
+//    }
+    //added by c 2021/7/26 get tb_comment
+//    @Override
+//    public List<TbComment> getTbComment(Long id){
+//        List<TbComment> commentList = goodsMapper.getTbComment(id);
+//        return commentList;
+//    }
+    //added by c 2021/7/26 get total_comment
+    @Override
+    public int getTotalRestComment(){
+        int total = goodsMapper.getTotalRestComment();
+        return total;
+    }
+    @Override
+    public double getAvgStar(){
+        double avgStar = goodsMapper.getAvgStar();
+        return avgStar;
+    }
+
+    //added by c 2021/7/28 get join category
+    @Override
+    public List<TabeLogJoinCategory> getJoinCategoryList(Long id){
+        List<TabeLogJoinCategory> joinList = goodsMapper.getJoinCategoryList(id);
+        return joinList;
+    }
+
+    //added by c 2021/7/29 top page
+    @Override
+    public List<TopPage> getTopPage(Long id){
+        List<TopPage> topPage = goodsMapper.getTopPage(id);
+        return topPage;
+    }
+
+    @Override
+    public List<TopImage> getTopImage(Long id){
+        List<TopImage> imageList = goodsMapper.getTopImage(id);
+        return imageList;
+    }
+
+    @Override
+    public List<TopKodawari> getTopKodawari(Long id){
+        List<TopKodawari> kodawariList = goodsMapper.getTopKodawari(id);
+        return kodawariList;
+    }
+    @Override
+    public List<RestHygiene> getRestHygiene(Long id){
+        List<RestHygiene> restHygieneList = goodsMapper.getRestHygiene(id);
+        return restHygieneList;
+    }
+    @Override
+    public List<TopCourse> getTopCourse(Long id){
+        List<TopCourse> topCourseList = goodsMapper.getTopCourse(id);
+        return topCourseList;
+    }
+    @Override
+    public List<TopCoupon> getTopCoupon(Long id){
+        List<TopCoupon> topCouponList = goodsMapper.getTopCoupon(id);
+        return topCouponList;
+    }
+    @Override
+    public List<TopCommentImage> getTopCommentImage(Long id){
+        List<TopCommentImage> commentImageList = goodsMapper.getTopCommentImage(id);
+        return commentImageList;
+    }
+
+    //comment good num
+    @Override
+    public boolean insertTabelogHelpedNum(TabelogGoodNum tabelogGoodNum){
+        return  goodsMapper.insertTabelogHelpedNum(tabelogGoodNum);
+    }
+
+    @Override
+    public boolean updateCommentNum(TabelogGoodNum tabelogGoodNum){
+        return goodsMapper.updateCommentNum(tabelogGoodNum);
+    }
+
+    @Override
+    public long getCommentNum(int commentId){
+        return  goodsMapper.getCommentNum(commentId);
+    }
+
+    @Override
+    public List<TabelogBasicInformation> getTopBasicInfo(Long id){
+        List<TabelogBasicInformation> basicInfoList = goodsMapper.getTopBasicInfo(id);
+        return basicInfoList;
+    }
+
+    @Override
+    public List<SeatFacility> getTopSeatInfo(Long id){
+        List<SeatFacility> seatInfoList = goodsMapper.getTopSeatInfo(id);
+        return seatInfoList;
+    }
+
+    @Override
+    public List<MenuCourse> getMenuCourse(Long id){
+        List<MenuCourse> menuCourseList = goodsMapper.getMenuCourse(id);
+        return menuCourseList;
+    }
+
+    @Override
+    public List<FeaturesRelatedInformation> getTopRelatedInfo(Long id){
+        List<FeaturesRelatedInformation> relatedInfoList = goodsMapper.getTopRelatedInfo(id);
+        return relatedInfoList;
     }
 }

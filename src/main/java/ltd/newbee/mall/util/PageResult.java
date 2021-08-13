@@ -23,6 +23,7 @@ public class PageResult implements Serializable {
     private int currPage;
     //列表数据
     private List<?> list;
+    private Boolean isInitial;
 
     /**
      * 分页
@@ -80,4 +81,11 @@ public class PageResult implements Serializable {
         this.list = list;
     }
 
+    public Boolean getInitial() {
+        return isInitial;
+    }
+
+    public void setInitial(Boolean initial) {
+        isInitial = initial;
+    }
 }
